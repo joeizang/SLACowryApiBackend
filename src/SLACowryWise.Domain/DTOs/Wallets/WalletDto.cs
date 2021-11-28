@@ -49,7 +49,7 @@ namespace SLACowryWise.Domain.DTOs.Wallets
     public class WalletPaginatedResponseDto
     {
         [JsonPropertyName("pagination")]
-        public Pagination Pagination { get; set; }
+        public ModelPagination Pagination { get; set; }
 
         [JsonPropertyName("data")]
         public List<WalletDto> Data { get; set; }
@@ -289,7 +289,7 @@ namespace SLACowryWise.Domain.DTOs.Wallets
     public class WalletDtoRoot
     {
         [JsonPropertyName("pagination")]
-        public Pagination Pagination { get; set; }
+        public ModelPagination Pagination { get; set; }
 
         [JsonPropertyName("data")]
         public List<WalletDatum> Data { get; set; }

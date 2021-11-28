@@ -72,7 +72,7 @@ namespace SLACowryWise.Domain.DTOs.Assets
     public class AssetsPaginatedResponseDto : DtoBase
     {
         [JsonPropertyName("pagination")]
-        public Pagination Pagination { get; set; }
+        public ModelPagination Pagination { get; set; }
 
         [JsonPropertyName("data")]
         public List<AssetsPayload> Data { get; set; }
@@ -184,7 +184,7 @@ namespace SLACowryWise.Domain.DTOs.Assets
     public class AssetsPaginatedDto : DtoBase
     {
         [JsonPropertyName("pagination")]
-        public Pagination Pagination { get; set; }
+        public ModelPagination Pagination { get; set; }
         
         [JsonPropertyName("data")] public List<SingleAssetData> Data { get; set; }
     }

@@ -2,7 +2,7 @@ using System.Text.Json.Serialization;
 
 namespace SLACowryWise.Domain
 {
-    public class Pagination
+    public class ModelPagination
     {
         [JsonPropertyName("next")]
         public string Next { get; set; }

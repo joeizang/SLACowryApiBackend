@@ -57,7 +57,7 @@ namespace SLACowryWise.Domain.DTOs.Investments
 
     public class InvestmentPaginatedResponse
     {
-        public Pagination Pagination { get; set; }
+        public ModelPagination Pagination { get; set; }
 
         public List<InvestmentActionPayload> Data { get; set; }
 

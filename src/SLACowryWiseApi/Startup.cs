@@ -54,7 +54,7 @@ namespace SLACowryWiseApi
             services.AddTransient<ITransactionService, TransactionsService>();
             services.AddTransient<IIndex, IndexService>();
             services.AddTransient<ITradeStockService, TradeStockService>();
-            services.AddTransient<SignatureGenerator>();
+            services.AddScoped<ISignatureGenerator,SignatureGenerator>();
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {

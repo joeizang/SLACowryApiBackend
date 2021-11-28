@@ -1,17 +1,18 @@
 using System;
 using System.Security.Cryptography;
 using System.Text;
+using Microsoft.Extensions.Options;
 using SLACowryWise.Domain.Configuration;
 
 namespace SLACowryWise.Domain.WebHookUtilities
 {
-    public class SignatureGenerator
+    public class SignatureGenerator : ISignatureGenerator
     {
         private AuthenticationConfiguration _configuration;
 
-        public SignatureGenerator(AuthenticationConfiguration configuration)
+        public SignatureGenerator(IOptions<AuthenticationConfiguration> configuration)
         {
-            _configuration = configuration;
+            _configuration = configuration.Value;
         }
 
         public string PrepSignature()

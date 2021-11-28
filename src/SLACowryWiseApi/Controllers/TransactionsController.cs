@@ -53,23 +53,5 @@ namespace SLACowryWiseApi.Controllers
             var result = await _service.GetAllWithdrawals(inputModel).ConfigureAwait(false);
             return Ok(result) ?? Ok(new GetAllWithdrawalsPaginatedResponse());
         }
-
-        // POST: api/Transactions
-        [HttpPost]
-        public void Post([FromBody] string value)
-        {
-        }
-
-        // PUT: api/Transactions/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
-        {
-        }
-
-        // DELETE: api/ApiWithActions/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
-        }
     }
 }

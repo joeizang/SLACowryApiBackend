@@ -15,9 +15,9 @@ namespace SLACowryWiseApi.Controllers
     public class WebHooksController : ControllerBase
     {
         private readonly IMediator _mediator;
-        private readonly SignatureGenerator _generator;
+        private readonly ISignatureGenerator _generator;
 
-        public WebHooksController(IMediator mediator, SignatureGenerator generator)
+        public WebHooksController(IMediator mediator, ISignatureGenerator generator)
         {
             _mediator = mediator;
             _generator = generator;

@@ -62,7 +62,7 @@ namespace SLACowryWise.Domain.DTOs.Indexes
     public class IndexPaginatedResponse : DtoBase
     {
         [JsonPropertyName("pagination")]
-        public Pagination Pagination { get; set; }
+        public ModelPagination Pagination { get; set; }
 
         [JsonPropertyName("data")]
         public List<IndexResponsePayload> Data { get; set; }
