@@ -6,7 +6,7 @@ namespace SLACowryWise.Domain.Abstractions
 {
     public interface IAssetsService
     {
-        Task<AssetsPaginatedResponse> GetAllAssets(AssetsPaginatedResponseInput inputModel = null);
+        Task<AssetsPaginatedResponse> GetAllAssets(AssetsPaginatedResponseInput inputModel);
         Task<SingleAssetRoot> GetSingleAsset(string id);
     }
 }
