@@ -25,8 +25,7 @@ namespace SLACowryWiseApi.Controllers
         [Produces(typeof(AssetsPaginatedResponse))]
         public async Task<IActionResult> Index([FromQuery] AssetsPaginatedResponseInput query)
         {
-            var result = new AssetsPaginatedResponse();
-            result = await _assetsService.GetAllAssets(query).ConfigureAwait(false);
+            var result = await _assetsService.GetAllAssets(query).ConfigureAwait(false);
             return result is not null ? Ok(result) : Ok(new AssetsPaginatedResponse());
         }
 
