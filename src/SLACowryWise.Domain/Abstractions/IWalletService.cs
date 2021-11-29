@@ -1,5 +1,6 @@
 using System.Threading.Tasks;
 using RestSharp;
+using SLACowryWise.Domain.DomainModels;
 using SLACowryWise.Domain.DTOs.Wallets;
 
 namespace SLACowryWise.Domain.Abstractions
@@ -11,4 +12,8 @@ namespace SLACowryWise.Domain.Abstractions
         Task<SingleWalletResponse> GetAWallet(string walletId);
         Task<WalletTransferDtoRoot> TransferFundsFromWallet(WalletTransferInputModel inputModel);
     }
+
+    public interface ICreateWallet : IMongodbService<CreateWallet> { }
+
+    public interface IFundsWalletTransfer : IMongodbService<FundsWalletTransfer> { }
 }

@@ -1,5 +1,6 @@
 using System.Threading.Tasks;
 using RestSharp;
+using SLACowryWise.Domain.DomainModels;
 using SLACowryWise.Domain.DTOs.Savings;
 using SLACowryWise.Domain.DTOs.Wallets;
 
@@ -19,4 +20,10 @@ namespace SLACowryWise.Domain.Abstractions
 
         Task<FundSavingsDtoResponse> FundSavingsFromWallet(WalletTransferInputModel inputModel);
     }
+
+    public interface ICreateSavings : IMongodbService<CreateSavings> { }
+
+    public interface IFundSavings : IMongodbService<FundSavings> { }
+
+    public interface IWithdrawSavings : IMongodbService<WithdrawSavings> { }
 }

@@ -2,6 +2,7 @@ using System;
 using System.Threading.Tasks;
 using RestSharp;
 using SLACowryWise.Domain.Abstractions;
+using SLACowryWise.Domain.Data;
 using SLACowryWise.Domain.DomainModels;
 using SLACowryWise.Domain.DTOs.Accounts;
 
@@ -138,6 +139,34 @@ namespace SLACowryWise.Domain.Services
             };
             await _bank.CreateOneAsync(bankUpdate).ConfigureAwait(false);
             return result.Data;
+        }
+    }
+
+    public class AccountCreatedService : MongodbPersistenceService<AccountCreated>, IAccountCreated
+    {
+        public AccountCreatedService(IMongoDatabaseSettings settings) : base(settings)
+        {
+        }
+    }
+
+    public class AccountPortfolioService : MongodbPersistenceService<AccountPortfolio>, IAccountPortfolio
+    {
+        public AccountPortfolioService(IMongoDatabaseSettings settings) : base(settings)
+        {
+        }
+    }
+
+    public class AccountBankUpdatedService : MongodbPersistenceService<AccountBankUpdate>, IAccountBankDetailsUpdated
+    {
+        public AccountBankUpdatedService(IMongoDatabaseSettings settings) : base(settings)
+        {
+        }
+    }
+
+    public class AccountIdentityUpdateService : MongodbPersistenceService<AccountIdentityUpdate>, IAccountIdentityUpdate
+    {
+        public AccountIdentityUpdateService(IMongoDatabaseSettings settings) : base(settings)
+        {
         }
     }
 }

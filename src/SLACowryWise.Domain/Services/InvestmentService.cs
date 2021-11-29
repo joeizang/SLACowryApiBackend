@@ -1,6 +1,8 @@
 using System.Threading.Tasks;
 using RestSharp;
 using SLACowryWise.Domain.Abstractions;
+using SLACowryWise.Domain.Data;
+using SLACowryWise.Domain.DomainModels;
 using SLACowryWise.Domain.DTOs.Investments;
 using SLACowryWise.Domain.DTOs.Wallets;
 
@@ -9,11 +11,21 @@ namespace SLACowryWise.Domain.Services
     public class InvestmentService : IInvestmentService
     {
         private readonly IHttpService _service;
+        private readonly ICreateInvestment _createInvestment;
+        private readonly IInvestmentFunded _investmentFunded;
+        private readonly ILiquidateInvestment _liquidateInvestment;
 
-        public InvestmentService(IHttpService service)
+        public InvestmentService(IHttpService service,
+            ICreateInvestment createInvestment,
+            IInvestmentFunded investmentFunded,
+            ILiquidateInvestment liquidateInvestment)
         {
             _service = service;
+            _createInvestment = createInvestment;
+            _investmentFunded = investmentFunded;
+            _liquidateInvestment = liquidateInvestment;
         }
+        
         public async Task<SingleInvestmentResponseDto> CreateInvestment(CreateInvestmentInputModel inputModel)
         {
             var request = new RestRequest("/api/v1/investments", Method.POST);
@@ -23,6 +35,11 @@ namespace SLACowryWise.Domain.Services
             var result = await client
                 .ExecuteAsync<SingleInvestmentResponseDto>(request)
                 .ConfigureAwait(false);
+            var created = new CreateInvestment
+            {
+                SingleInvestmentResponseDto = result.Data,
+            };
+            await _createInvestment.CreateOneAsync(created).ConfigureAwait(false);
             return result.Data;
         }
 
@@ -48,6 +65,11 @@ namespace SLACowryWise.Domain.Services
             var result = await client
                 .ExecuteAsync<TransferFromWalletResponseDto>(request)
                 .ConfigureAwait(false);
+            var funded = new InvestmentsFunded
+            {
+                FundedInvestmentDto = result.Data
+            };
+            await _investmentFunded.CreateOneAsync(funded).ConfigureAwait(false);
             return result.Data;
         }
 
@@ -59,6 +81,11 @@ namespace SLACowryWise.Domain.Services
             var result = await client
                 .ExecuteAsync<InvestmentLiquidatedDto>(request)
                 .ConfigureAwait(false);
+            var liquidated = new InvestmentLiquidation
+            {
+                InvestmentLiquidatedDto = result.Data
+            };
+            await _liquidateInvestment.CreateOneAsync(liquidated).ConfigureAwait(false);
             return result.Data;
         }
 
@@ -70,6 +97,27 @@ namespace SLACowryWise.Domain.Services
                 .ExecuteAsync<SingleInvestmentResponseDto>(request)
                 .ConfigureAwait(false);
             return result.Data;
+        }
+    }
+
+    public class InvestmentCreatedService : MongodbPersistenceService<CreateInvestment>, ICreateInvestment
+    {
+        public InvestmentCreatedService(IMongoDatabaseSettings settings) : base(settings)
+        {
+        }
+    }
+
+    public class LiquidateInvestmentService : MongodbPersistenceService<InvestmentLiquidation>, ILiquidateInvestment
+    {
+        public LiquidateInvestmentService(IMongoDatabaseSettings settings) : base(settings)
+        {
+        }
+    }
+
+    public class InvestmentFundedService : MongodbPersistenceService<InvestmentsFunded>, IInvestmentFunded
+    {
+        public InvestmentFundedService(IMongoDatabaseSettings settings) : base(settings)
+        {
         }
     }
 }

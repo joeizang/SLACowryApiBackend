@@ -2,6 +2,8 @@ using System;
 using System.Threading.Tasks;
 using RestSharp;
 using SLACowryWise.Domain.Abstractions;
+using SLACowryWise.Domain.Data;
+using SLACowryWise.Domain.DomainModels;
 using SLACowryWise.Domain.DTOs.Wallets;
 
 namespace SLACowryWise.Domain.Services
@@ -55,6 +57,20 @@ namespace SLACowryWise.Domain.Services
                     .ConfigureAwait(false);
                 return result.Data;
 
+        }
+    }
+
+    public class CreateWalletService : MongodbPersistenceService<CreateWallet>, ICreateWallet
+    {
+        public CreateWalletService(IMongoDatabaseSettings settings) : base(settings)
+        {
+        }
+    }
+
+    public class FundsWalletTransferService : MongodbPersistenceService<FundsWalletTransfer>, IFundsWalletTransfer
+    {
+        public FundsWalletTransferService(IMongoDatabaseSettings settings) : base(settings)
+        {
         }
     }
 }

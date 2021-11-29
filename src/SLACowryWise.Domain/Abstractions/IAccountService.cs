@@ -1,4 +1,5 @@
 using System.Threading.Tasks;
+using SLACowryWise.Domain.DomainModels;
 using SLACowryWise.Domain.DTOs.Accounts;
 
 namespace SLACowryWise.Domain.Abstractions
@@ -61,4 +62,12 @@ namespace SLACowryWise.Domain.Abstractions
         /// <returns>AccountBankUpdateDto</returns>
         Task<AccountBankUpdateResponse> UpdateBankDetails(AddBankInputModel inputModel);
     }
+
+    public interface IAccountIdentityUpdate : IMongodbService<AccountIdentityUpdate> { }
+
+    public interface IAccountPortfolio : IMongodbService<AccountPortfolio> { }
+
+    public interface IAccountCreated : IMongodbService<AccountCreated> { }
+
+    public interface IAccountBankDetailsUpdated : IMongodbService<AccountBankUpdate> { }
 }

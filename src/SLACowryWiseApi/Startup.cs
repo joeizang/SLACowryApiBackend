@@ -20,6 +20,7 @@ using SLACowryWise.Domain.Configuration;
 using SLACowryWise.Domain.Data;
 using SLACowryWise.Domain.DomainModels;
 using SLACowryWise.Domain.DTOs.Accounts;
+using SLACowryWise.Domain.Extensions;
 using SLACowryWise.Domain.Services;
 using SLACowryWise.Domain.WebHookUtilities;
 
@@ -52,12 +53,13 @@ namespace SLACowryWiseApi
             services.AddHttpClient<IAuthenticationService, AuthenticationService>();
             services.AddTransient<IRestClient>(opt => new RestClient("https://sandbox.embed.cowrywise.com"));
             services.AddTransient<IHttpService, HttpService>();
-            services.AddTransient<IAccountService, AccountService>();
+            services.AddAccountServiceTypes();
+            services.AddInvestmentTypesService();
+            services.AddSavingsServiceTypes();
+            services.AddWalletServiceTypes();
+
             services.AddTransient<IAuthenticationService, AuthenticationService>();
-            services.AddTransient<IWalletService, WalletService>();
             services.AddTransient<IAssetsService, AssetsService>();
-            services.AddTransient<ISavingsService, SavingsService>();
-            services.AddTransient<IInvestmentService, InvestmentService>();
             services.AddTransient<ISettlementService, SettlementService>();
             services.AddTransient<ITransactionService, TransactionsService>();
             services.AddTransient<IIndex, IndexService>();

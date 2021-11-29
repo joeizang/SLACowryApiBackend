@@ -20,11 +20,7 @@ namespace SLACowryWise.Domain.Abstractions
         Task DeleteOneAsync(T entity);
 
         Task DeleteOneByIdAsync(string id);
+
+        string CollectionName { get; set; }
     }
-
-    public interface IAccountPortfolio : IMongodbService<AccountPortfolio> { }
-
-    public interface IAccountCreated : IMongodbService<AccountCreated> { }
-
-    public interface IAccountBankDetailsUpdated : IMongodbService<AccountBankUpdate> { }
 }

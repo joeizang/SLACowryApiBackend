@@ -2,6 +2,8 @@ using System;
 using System.Threading.Tasks;
 using RestSharp;
 using SLACowryWise.Domain.Abstractions;
+using SLACowryWise.Domain.Data;
+using SLACowryWise.Domain.DomainModels;
 using SLACowryWise.Domain.DTOs.Savings;
 using SLACowryWise.Domain.DTOs.Wallets;
 
@@ -27,7 +29,10 @@ namespace SLACowryWise.Domain.Services
         public async Task<SavingsCreatedResponseDto> CreateSavings(CreateSavingsInputModel inputModel)
         {
             IRestRequest request = new RestRequest("/api/v1/savings", Method.POST);
-             
+            request.AddParameter("account_id", inputModel.AccountId, ParameterType.GetOrPost);
+            request.AddParameter("currency_code", inputModel.CurrencyCode, ParameterType.GetOrPost);
+            request.AddParameter("days", inputModel.Days, ParameterType.GetOrPost);
+            request.AddParameter("interest_enabled", inputModel.InterestEnabled, ParameterType.GetOrPost);
             var client = await _service.InitializeClient().ConfigureAwait(false);
             var result = await client.ExecuteAsync<SavingsCreatedResponseDto>(request)
                 .ConfigureAwait(false);
@@ -76,6 +81,27 @@ namespace SLACowryWise.Domain.Services
                 Successful = result.IsSuccessful
             };
             return withdrawalStatus;
+        }
+    }
+
+    public class CreateSavingsService : MongodbPersistenceService<CreateSavings>, ICreateSavings
+    {
+        public CreateSavingsService(IMongoDatabaseSettings settings) : base(settings)
+        {
+        }
+    }
+
+    public class FundSavingsService : MongodbPersistenceService<FundSavings>, IFundSavings
+    {
+        public FundSavingsService(IMongoDatabaseSettings settings) : base(settings)
+        {
+        }
+    }
+
+    public class WithdrawSavingsService : MongodbPersistenceService<WithdrawSavings>, IWithdrawSavings
+    {
+        public WithdrawSavingsService(IMongoDatabaseSettings settings) : base(settings)
+        {
         }
     }
 }

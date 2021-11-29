@@ -1,5 +1,6 @@
 using System.Threading.Tasks;
 using RestSharp;
+using SLACowryWise.Domain.DomainModels;
 using SLACowryWise.Domain.DTOs.Investments;
 using SLACowryWise.Domain.DTOs.Wallets;
 
@@ -18,4 +19,10 @@ namespace SLACowryWise.Domain.Abstractions
         Task<SingleInvestmentResponseDto> GetSingleInvestment(string investmentId);
         
     }
+
+    public interface ICreateInvestment : IMongodbService<CreateInvestment> { }
+
+    public interface ILiquidateInvestment : IMongodbService<InvestmentLiquidation> { }
+
+    public interface IInvestmentFunded : IMongodbService<InvestmentsFunded> { }
 }

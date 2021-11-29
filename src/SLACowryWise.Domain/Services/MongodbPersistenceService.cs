@@ -4,7 +4,6 @@ using SLACowryWise.Domain.Data;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace SLACowryWise.Domain.Services
@@ -12,11 +11,13 @@ namespace SLACowryWise.Domain.Services
     public class MongodbPersistenceService<T> : IMongodbService<T> where T : BaseDomainModel
     {
         private readonly IMongoCollection<T> _genericCollection;
+
+        public string CollectionName { get; set; } 
         public MongodbPersistenceService(IMongoDatabaseSettings settings)
         {
             var client = new MongoClient(settings.ConnectionString);
             var db = client.GetDatabase(settings.DatabaseName);
-            _genericCollection = db.GetCollection<T>(settings.CollectionName);
+            _genericCollection = db.GetCollection<T>(ProvideCollectionName(typeof(T)));
         }
         public async Task CreateOneAsync(T entity)
         {
@@ -49,6 +50,25 @@ namespace SLACowryWise.Domain.Services
             var cursor = await _genericCollection.FindAsync(g => true).ConfigureAwait(false);
             var result = await cursor.ToListAsync().ConfigureAwait(false);
             return result;
+        }
+
+        private protected string ProvideCollectionName(Type documentType)
+        {
+            return ((BsonCollectionAttribute)documentType.GetCustomAttributes(
+                typeof(BsonCollectionAttribute),
+                true)
+            .FirstOrDefault())?.CollectionName;
+        }
+    }
+
+    [AttributeUsage(AttributeTargets.Class, Inherited = false)]
+    public class BsonCollectionAttribute : Attribute
+    {
+        public string CollectionName { get; }
+
+        public BsonCollectionAttribute(string collectionName)
+        {
+            CollectionName = collectionName;
         }
     }
 }
