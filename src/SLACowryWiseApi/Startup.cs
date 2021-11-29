@@ -18,6 +18,8 @@ using SLACowryWise.Domain;
 using SLACowryWise.Domain.Abstractions;
 using SLACowryWise.Domain.Configuration;
 using SLACowryWise.Domain.Data;
+using SLACowryWise.Domain.DomainModels;
+using SLACowryWise.Domain.DTOs.Accounts;
 using SLACowryWise.Domain.Services;
 using SLACowryWise.Domain.WebHookUtilities;
 
@@ -39,6 +41,12 @@ namespace SLACowryWiseApi
             {
                 options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection"));
             });
+
+            services.Configure<MongoDatabaseSettings>(Configuration.GetSection("MongodbConnectionSettings"));
+            services.AddSingleton<IMongoDatabaseSettings, MongoDatabaseSettings>(st =>
+                st.GetRequiredService<IOptions<MongoDatabaseSettings>>().Value);
+            services.AddScoped<IMongodbService<AccountCreated>, MongodbPersistenceService<AccountCreated>>();
+
             services.Configure<AuthenticationConfiguration>(Configuration.GetSection("CowryWiseSettings"));
             services.AddHttpClient();
             services.AddHttpClient<IAuthenticationService, AuthenticationService>();

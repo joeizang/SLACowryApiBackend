@@ -15,9 +15,9 @@ namespace SLACowryWise.Domain.Abstractions
         [Key]
         [BsonId]
         [BsonRepresentation(BsonType.ObjectId)]
-        public string UniqueID { get; }
+        public string Id { get; set; }
 
         [BsonElement("CreatedAt")]
-        public DateTimeOffset CreatedAt { get; private set; }
+        public DateTimeOffset CreatedAt { get; set; }
     }
 }

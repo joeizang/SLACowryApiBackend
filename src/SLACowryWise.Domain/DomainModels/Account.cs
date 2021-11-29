@@ -18,7 +18,7 @@ namespace SLACowryWise.Domain.DomainModels
 
     public class AccountBankUpdate : BaseDomainModel
     {
-        public AccountPortfolioResponse AccountPortfolioDto { get; set; }
+        public AccountBankUpdateResponse AccountBankUpdateDto { get; set; }
     }
 
     public class AccountIdentityUpdate : BaseDomainModel
