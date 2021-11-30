@@ -10,7 +10,7 @@ namespace SLACowryWise.Domain.Abstractions
     {
         Task<SavingsPaginatedResponseDto> GetAllSavings();
 
-        Task<SavingsCreatedResponseDto> CreateSavings(CreateSavingsInputModel inputModel);
+        Task<CreateSavingsResponse> CreateSavings(CreateSavingsInputModel inputModel);
 
         Task<SingleSavingsByIdResponseDto> GetSingleSavings(string savingsId);
 

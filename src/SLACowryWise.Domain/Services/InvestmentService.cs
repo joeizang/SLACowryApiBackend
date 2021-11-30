@@ -46,8 +46,17 @@ namespace SLACowryWise.Domain.Services
         public async Task<InvestmentPaginatedDtoResponse> GetAllInvestments(InvestmentPaginatedResponseInput inputModel)
         {
             var request = new RestRequest("/api/v1/investments", Method.GET);
-            request.AddParameter("asset_type", inputModel.AssetType, ParameterType.GetOrPost);
-            request.AddParameter("page", inputModel.Page, ParameterType.GetOrPost);
+            if(inputModel is not null && string.IsNullOrEmpty(inputModel.Page) && string.IsNullOrEmpty(inputModel.PageSize) 
+                && string.IsNullOrEmpty(inputModel.AssetType))
+            {
+                var clientHttp = await _service.InitializeClient().ConfigureAwait(false);
+                var resultPayload = await clientHttp
+                    .ExecuteAsync<InvestmentPaginatedDtoResponse>(request)
+                    .ConfigureAwait(false);
+                return resultPayload.Data;
+            }
+            //request.AddParameter("asset_type", inputModel.AssetType, ParameterType.GetOrPost);
+            //request.AddParameter("page", inputModel.Page, ParameterType.GetOrPost);
             request.AddParameter("page_size", inputModel.PageSize, ParameterType.GetOrPost);
             var client = await _service.InitializeClient().ConfigureAwait(false);
             var result = await client

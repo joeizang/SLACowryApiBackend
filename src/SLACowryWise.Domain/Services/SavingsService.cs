@@ -12,10 +12,16 @@ namespace SLACowryWise.Domain.Services
     public class SavingsService : ISavingsService
     {
         private readonly IHttpService _service;
+        private readonly ICreateSavings _createSavings;
+        private readonly IFundSavings _fundSavings;
+        private readonly IWithdrawSavings _withdraw;
 
-        public SavingsService(IHttpService service)
+        public SavingsService(IHttpService service, ICreateSavings createSavings, IFundSavings fundSavings, IWithdrawSavings withdraw)
         {
             _service = service;
+            _createSavings = createSavings;
+            _fundSavings = fundSavings;
+            _withdraw = withdraw;
         }
         public async Task<SavingsPaginatedResponseDto> GetAllSavings()
         {
@@ -26,7 +32,7 @@ namespace SLACowryWise.Domain.Services
             return result.Data;
         }
 
-        public async Task<SavingsCreatedResponseDto> CreateSavings(CreateSavingsInputModel inputModel)
+        public async Task<CreateSavingsResponse> CreateSavings(CreateSavingsInputModel inputModel)
         {
             IRestRequest request = new RestRequest("/api/v1/savings", Method.POST);
             request.AddParameter("account_id", inputModel.AccountId, ParameterType.GetOrPost);
@@ -34,8 +40,13 @@ namespace SLACowryWise.Domain.Services
             request.AddParameter("days", inputModel.Days, ParameterType.GetOrPost);
             request.AddParameter("interest_enabled", inputModel.InterestEnabled, ParameterType.GetOrPost);
             var client = await _service.InitializeClient().ConfigureAwait(false);
-            var result = await client.ExecuteAsync<SavingsCreatedResponseDto>(request)
+            var result = await client.ExecuteAsync<CreateSavingsResponse>(request)
                 .ConfigureAwait(false);
+            var created = new CreateSavings
+            {
+                CreateSavingsResponse = result.Data
+            };
+            await _createSavings.CreateOneAsync(created).ConfigureAwait(false);
             return result.Data;
         }
 
@@ -56,6 +67,11 @@ namespace SLACowryWise.Domain.Services
             var client = await _service.InitializeClient().ConfigureAwait(false);
             var result = await client.ExecuteAsync<FundSavingsDtoResponse>(request)
                 .ConfigureAwait(false);
+            var funded = new FundSavings
+            {
+                FundSavingsDtoResponse = result.Data
+            };
+            await _fundSavings.CreateOneAsync(funded).ConfigureAwait(false);
             return result.Data;
         }
 
@@ -80,6 +96,11 @@ namespace SLACowryWise.Domain.Services
             {
                 Successful = result.IsSuccessful
             };
+            var withdrawn = new WithdrawSavings
+            {
+                WithdrawFromSavingsDto = withdrawalStatus
+            };
+            await _withdraw.CreateOneAsync(withdrawn).ConfigureAwait(false);
             return withdrawalStatus;
         }
     }

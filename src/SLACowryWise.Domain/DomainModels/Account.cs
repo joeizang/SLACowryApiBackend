@@ -13,10 +13,10 @@ namespace SLACowryWise.Domain.DomainModels
         public AccountCreationResponse AccountCreationDto { get; set; }
     }
 
-    [BsonCollection("AccountsPortfolios")]
-    public class AccountPortfolio : BaseDomainModel
+    [BsonCollection("AccountsProfile")]
+    public class AccountProfile : BaseDomainModel
     {
-        public AccountPortfolioResponse AccountPortfolioDto { get; set; }
+        public AccountCreationResponse AccountProfileDto { get; set; }
     }
 
     [BsonCollection("AccountsBankUpdate")]
@@ -30,4 +30,17 @@ namespace SLACowryWise.Domain.DomainModels
     {
         public AccountIdentityResponse AccountIdentityDto { get; set; }
     }
+
+    [BsonCollection("AccountsNextOfKin")]
+    public class AccountNextOfKinUpdate : BaseDomainModel
+    {
+        public AccountCreationResponse UpdateNextOfKin { get; set; }
+    }
+
+    [BsonCollection("AccountAddressUpdates")]
+    public class AccountAddressUpdates : BaseDomainModel
+    {
+        public AccountCreationResponse AddressUpdate { get; set; }
+    }
+
 }

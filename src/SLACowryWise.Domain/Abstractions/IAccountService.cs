@@ -65,9 +65,13 @@ namespace SLACowryWise.Domain.Abstractions
 
     public interface IAccountIdentityUpdate : IMongodbService<AccountIdentityUpdate> { }
 
-    public interface IAccountPortfolio : IMongodbService<AccountPortfolio> { }
+    public interface IAccountProfile : IMongodbService<AccountProfile> { }
 
     public interface IAccountCreated : IMongodbService<AccountCreated> { }
 
     public interface IAccountBankDetailsUpdated : IMongodbService<AccountBankUpdate> { }
+
+    public interface IAccountNextOfKinUpdate : IMongodbService<AccountNextOfKinUpdate> { }
+
+    public interface IAccountAddressUpdates : IMongodbService<AccountAddressUpdates> { }
 }

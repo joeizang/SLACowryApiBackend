@@ -12,19 +12,27 @@ namespace SLACowryWise.Domain.Services
     {
         private readonly IHttpService _service;
         private readonly IAccountCreated _mongo;
-        private readonly IAccountPortfolio _portfolio;
+        private readonly IAccountIdentityUpdate _identity;
         private readonly IAccountBankDetailsUpdated _bank;
+        private readonly IAccountProfile _profile;
+        private readonly IAccountNextOfKinUpdate _nextOfKin;
+        private readonly IAccountAddressUpdates _addressUpdates;
 
         public AccountService(IHttpService service,
             IAccountCreated mongo,
-            IAccountPortfolio portfolio,
-            IAccountBankDetailsUpdated bank
-            )
+            IAccountIdentityUpdate identity,
+            IAccountBankDetailsUpdated bank,
+            IAccountNextOfKinUpdate nextOfKin,
+            IAccountProfile accountProfile,
+            IAccountAddressUpdates addressUpdates)
         {
             _service = service;
             _mongo = mongo;
-            _portfolio = portfolio;
+            _identity = identity;
             _bank = bank;
+            _profile = accountProfile;
+            _nextOfKin = nextOfKin;
+            _addressUpdates = addressUpdates;
         }
         public async Task<AccountPortfolioResponse> GetPortfolio(string id)
         {
@@ -32,11 +40,6 @@ namespace SLACowryWise.Domain.Services
             var client = await _service.InitializeClient().ConfigureAwait(false);
             var result = await client.ExecuteAsync<AccountPortfolioResponse>(request)
                 .ConfigureAwait(false);
-            var acctPortfolio = new AccountPortfolio
-            {
-                AccountPortfolioDto = result.Data
-            };
-            await _portfolio.CreateOneAsync(acctPortfolio).ConfigureAwait(false);
             return result.Data;
         }
 
@@ -52,7 +55,11 @@ namespace SLACowryWise.Domain.Services
             var client = await _service.InitializeClient().ConfigureAwait(false);
             var result = await client.ExecuteAsync<AccountCreationResponse>(request)
                 .ConfigureAwait(false);
-            
+            var addyUpdates = new AccountAddressUpdates
+            {
+                AddressUpdate = result.Data
+            };
+            await _addressUpdates.CreateOneAsync(addyUpdates).ConfigureAwait(false);
             return result.Data;
         }
 
@@ -96,6 +103,11 @@ namespace SLACowryWise.Domain.Services
             var client = await _service.InitializeClient().ConfigureAwait(false);
             var result = await client.ExecuteAsync<AccountCreationResponse>(request)
                 .ConfigureAwait(false);
+            var nextOfKin = new AccountNextOfKinUpdate
+            {
+                UpdateNextOfKin = result.Data
+            };
+            await _nextOfKin.CreateOneAsync(nextOfKin).ConfigureAwait(false);
             return result.Data;
         }
 
@@ -111,6 +123,11 @@ namespace SLACowryWise.Domain.Services
             var client = await _service.InitializeClient().ConfigureAwait(false);
             var result = await client.ExecuteAsync<AccountCreationResponse>(request)
                 .ConfigureAwait(false);
+            var acctProfile = new AccountProfile
+            {
+                AccountProfileDto = result.Data
+            };
+            await _profile.CreateOneAsync(acctProfile).ConfigureAwait(false);
             return result.Data;
         }
 
@@ -122,6 +139,11 @@ namespace SLACowryWise.Domain.Services
             var client = await _service.InitializeClient().ConfigureAwait(false);
             var result = await client.ExecuteAsync<AccountIdentityResponse>(request)
                 .ConfigureAwait(false);
+            var identityUpdate = new AccountIdentityUpdate
+            {
+                AccountIdentityDto = result.Data
+            };
+            await _identity.CreateOneAsync(identityUpdate).ConfigureAwait(false);
             return result.Data;
         }
 
@@ -149,13 +171,6 @@ namespace SLACowryWise.Domain.Services
         }
     }
 
-    public class AccountPortfolioService : MongodbPersistenceService<AccountPortfolio>, IAccountPortfolio
-    {
-        public AccountPortfolioService(IMongoDatabaseSettings settings) : base(settings)
-        {
-        }
-    }
-
     public class AccountBankUpdatedService : MongodbPersistenceService<AccountBankUpdate>, IAccountBankDetailsUpdated
     {
         public AccountBankUpdatedService(IMongoDatabaseSettings settings) : base(settings)
@@ -166,6 +181,27 @@ namespace SLACowryWise.Domain.Services
     public class AccountIdentityUpdateService : MongodbPersistenceService<AccountIdentityUpdate>, IAccountIdentityUpdate
     {
         public AccountIdentityUpdateService(IMongoDatabaseSettings settings) : base(settings)
+        {
+        }
+    }
+
+    public class AccountProfileService : MongodbPersistenceService<AccountProfile>, IAccountProfile
+    {
+        public AccountProfileService(IMongoDatabaseSettings settings) : base(settings)
+        {
+        }
+    }
+
+    public class AccountNextOfKinUpdateService : MongodbPersistenceService<AccountNextOfKinUpdate>, IAccountNextOfKinUpdate
+    {
+        public AccountNextOfKinUpdateService(IMongoDatabaseSettings settings) : base(settings)
+        {
+        }
+    }
+
+    public class AccountAddressUpdatesService : MongodbPersistenceService<AccountAddressUpdates>, IAccountAddressUpdates
+    {
+        public AccountAddressUpdatesService(IMongoDatabaseSettings settings) : base(settings)
         {
         }
     }
