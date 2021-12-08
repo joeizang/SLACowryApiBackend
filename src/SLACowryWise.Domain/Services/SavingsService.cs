@@ -1,11 +1,10 @@
-using System;
-using System.Threading.Tasks;
 using RestSharp;
 using SLACowryWise.Domain.Abstractions;
 using SLACowryWise.Domain.Data;
 using SLACowryWise.Domain.DomainModels;
 using SLACowryWise.Domain.DTOs.Savings;
 using SLACowryWise.Domain.DTOs.Wallets;
+using System.Threading.Tasks;
 
 namespace SLACowryWise.Domain.Services
 {
@@ -44,7 +43,10 @@ namespace SLACowryWise.Domain.Services
                 .ConfigureAwait(false);
             var created = new CreateSavings
             {
-                CreateSavingsResponse = result.Data
+                CreateSavingsResponse = result.Data,
+                AccountId = inputModel.AccountId,
+                CustomerId = inputModel.CustmerId,
+                ProductType = inputModel.ProductTypeId.ToString(),
             };
             await _createSavings.CreateOneAsync(created).ConfigureAwait(false);
             return result.Data;
@@ -58,7 +60,7 @@ namespace SLACowryWise.Domain.Services
                 false);
             return result.Data;
         }
-        
+
         public async Task<FundSavingsDtoResponse> FundSavingsFromWallet(WalletTransferInputModel inputModel)
         {
             var request = new RestRequest($"/api/v1/wallets/{inputModel.AccountId}/transfer", Method.POST);
@@ -69,7 +71,10 @@ namespace SLACowryWise.Domain.Services
                 .ConfigureAwait(false);
             var funded = new FundSavings
             {
-                FundSavingsDtoResponse = result.Data
+                FundSavingsDtoResponse = result.Data,
+                AccountId = inputModel.AccountId,
+                CustomerId = inputModel.CustomerId,
+                ProductType = inputModel.ProductType,
             };
             await _fundSavings.CreateOneAsync(funded).ConfigureAwait(false);
             return result.Data;

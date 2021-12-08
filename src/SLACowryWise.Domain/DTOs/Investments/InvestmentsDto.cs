@@ -83,8 +83,14 @@ namespace SLACowryWise.Domain.DTOs.Investments
 
         [JsonPropertyName("asset_code")]
         public string AssetCode { get; set; }
+
+        [JsonPropertyName("customer_Id")]
+        public string CustomerId { get; set; }
+
+        [JsonPropertyName("sla_product_type")]
+        public int ProductType { get; set; }
     }
-    
+
     public class PendingDeposit
     {
         [JsonPropertyName("id")]
@@ -168,7 +174,7 @@ namespace SLACowryWise.Domain.DTOs.Investments
         [JsonPropertyName("data")]
         public InvestmentLiquidatedPayload Data { get; set; }
     }
-    
+
     public class InvestmentPagination
     {
         [JsonPropertyName("next")]

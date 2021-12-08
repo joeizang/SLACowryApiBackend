@@ -1,10 +1,10 @@
-using System.Threading.Tasks;
 using RestSharp;
 using SLACowryWise.Domain.Abstractions;
 using SLACowryWise.Domain.Data;
 using SLACowryWise.Domain.DomainModels;
 using SLACowryWise.Domain.DTOs.Investments;
 using SLACowryWise.Domain.DTOs.Wallets;
+using System.Threading.Tasks;
 
 namespace SLACowryWise.Domain.Services
 {
@@ -25,7 +25,7 @@ namespace SLACowryWise.Domain.Services
             _investmentFunded = investmentFunded;
             _liquidateInvestment = liquidateInvestment;
         }
-        
+
         public async Task<SingleInvestmentResponseDto> CreateInvestment(CreateInvestmentInputModel inputModel)
         {
             var request = new RestRequest("/api/v1/investments", Method.POST);
@@ -38,6 +38,8 @@ namespace SLACowryWise.Domain.Services
             var created = new CreateInvestment
             {
                 SingleInvestmentResponseDto = result.Data,
+                AccountId = inputModel.AccountId,
+                CustomerId = inputModel.CustomerId,
             };
             await _createInvestment.CreateOneAsync(created).ConfigureAwait(false);
             return result.Data;
@@ -46,7 +48,7 @@ namespace SLACowryWise.Domain.Services
         public async Task<InvestmentPaginatedDtoResponse> GetAllInvestments(InvestmentPaginatedResponseInput inputModel)
         {
             var request = new RestRequest("/api/v1/investments", Method.GET);
-            if(inputModel is not null && string.IsNullOrEmpty(inputModel.Page) && string.IsNullOrEmpty(inputModel.PageSize) 
+            if (inputModel is not null && string.IsNullOrEmpty(inputModel.Page) && string.IsNullOrEmpty(inputModel.PageSize)
                 && string.IsNullOrEmpty(inputModel.AssetType))
             {
                 var clientHttp = await _service.InitializeClient().ConfigureAwait(false);
@@ -76,13 +78,15 @@ namespace SLACowryWise.Domain.Services
                 .ConfigureAwait(false);
             var funded = new InvestmentsFunded
             {
-                FundedInvestmentDto = result.Data
+                FundedInvestmentDto = result.Data,
+                AccountId = inputModel.AccountId,
+                CustomerId = inputModel.CustomerId,
             };
             await _investmentFunded.CreateOneAsync(funded).ConfigureAwait(false);
             return result.Data;
         }
 
-        public async Task<InvestmentLiquidatedDto> LiquidateInvestment(string units, string investmentId)
+        public async Task<InvestmentLiquidatedDto> LiquidateInvestment(string units, string investmentId, string accountId, string customerId)
         {
             var request = new RestRequest($"/api/v1/investments/{investmentId}/liquidate", Method.POST);
             request.AddParameter("units", units, ParameterType.GetOrPost);
@@ -92,7 +96,9 @@ namespace SLACowryWise.Domain.Services
                 .ConfigureAwait(false);
             var liquidated = new InvestmentLiquidation
             {
-                InvestmentLiquidatedDto = result.Data
+                InvestmentLiquidatedDto = result.Data,
+                AccountId = accountId,
+                CustomerId = customerId,
             };
             await _liquidateInvestment.CreateOneAsync(liquidated).ConfigureAwait(false);
             return result.Data;

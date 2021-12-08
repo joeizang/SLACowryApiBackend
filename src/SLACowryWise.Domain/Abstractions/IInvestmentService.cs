@@ -1,8 +1,7 @@
-using System.Threading.Tasks;
-using RestSharp;
 using SLACowryWise.Domain.DomainModels;
 using SLACowryWise.Domain.DTOs.Investments;
 using SLACowryWise.Domain.DTOs.Wallets;
+using System.Threading.Tasks;
 
 namespace SLACowryWise.Domain.Abstractions
 {
@@ -14,10 +13,10 @@ namespace SLACowryWise.Domain.Abstractions
 
         Task<TransferFromWalletResponseDto> FundInvestment(WalletTransferInputModel inputModel);
 
-        Task<InvestmentLiquidatedDto> LiquidateInvestment(string units, string investmentId);
+        Task<InvestmentLiquidatedDto> LiquidateInvestment(string units, string investmentId, string accountId, string customerId);
 
         Task<SingleInvestmentResponseDto> GetSingleInvestment(string investmentId);
-        
+
     }
 
     public interface ICreateInvestment : IMongodbService<CreateInvestment> { }

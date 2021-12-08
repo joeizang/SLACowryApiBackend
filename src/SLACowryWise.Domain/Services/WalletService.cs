@@ -1,10 +1,9 @@
-using System;
-using System.Threading.Tasks;
 using RestSharp;
 using SLACowryWise.Domain.Abstractions;
 using SLACowryWise.Domain.Data;
 using SLACowryWise.Domain.DomainModels;
 using SLACowryWise.Domain.DTOs.Wallets;
+using System.Threading.Tasks;
 
 namespace SLACowryWise.Domain.Services
 {
@@ -41,7 +40,9 @@ namespace SLACowryWise.Domain.Services
                 .ConfigureAwait(false);
             var created = new CreateWallet
             {
-                CreateWalletResponseDto = result.Data
+                CreateWalletResponseDto = result.Data,
+                AccountId = inputModel.AccountId,
+                CustomerId = inputModel.CustomerId
             };
             await _createWallet.CreateOneAsync(created).ConfigureAwait(false);
             return result.Data;
@@ -66,7 +67,9 @@ namespace SLACowryWise.Domain.Services
                 .ConfigureAwait(false);
             var transferred = new FundsWalletTransfer
             {
-                TransferFundsFromWallet = result.Data
+                TransferFundsFromWallet = result.Data,
+                AccountId = inputModel.AccountId,
+                CustomerId = inputModel.CustomerId
             };
             await _walletTransfer.CreateOneAsync(transferred).ConfigureAwait(false);
             return result.Data;

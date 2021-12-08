@@ -1,7 +1,7 @@
+using SLACowryWise.Domain.DTOs.Wallets;
 using System;
 using System.Collections.Generic;
 using System.Text.Json.Serialization;
-using SLACowryWise.Domain.DTOs.Wallets;
 
 namespace SLACowryWise.Domain.DTOs.Savings
 {
@@ -72,6 +72,10 @@ namespace SLACowryWise.Domain.DTOs.Savings
         public string Days { get; set; }
         [JsonPropertyName("interest_enabled")]
         public string InterestEnabled { get; set; }
+        [JsonPropertyName("customerId")]
+        public string CustmerId { get; set; }
+        [JsonPropertyName("sla_product_type")]
+        public int ProductTypeId { get; set; }
     }
 
     public class SavingsCreatedPayload
@@ -118,7 +122,7 @@ namespace SLACowryWise.Domain.DTOs.Savings
         [JsonPropertyName("data")]
         public SavingsCreatedPayload Data { get; set; }
     }
-    
+
     public class SavingsPagination
     {
         [JsonPropertyName("next")]
@@ -187,7 +191,7 @@ namespace SLACowryWise.Domain.DTOs.Savings
         [JsonPropertyName("status")]
         public string Status { get; set; }
     }
-    
+
     public class SingleSavingsByIdPayload
     {
         [JsonPropertyName("savings_id")]
@@ -241,7 +245,7 @@ namespace SLACowryWise.Domain.DTOs.Savings
         [JsonPropertyName("status")]
         public string Status { get; set; }
     }
-    
+
     public class SavingsRatePayload
     {
         [JsonPropertyName("interest_rate")]
@@ -289,7 +293,7 @@ namespace SLACowryWise.Domain.DTOs.Savings
         [JsonPropertyName("data")]
         public FundSavingsPayload Data { get; set; }
     }
-    
+
     public class SavingsRateDtoResponse : DtoBase
     {
         [JsonPropertyName("data")]
@@ -306,12 +310,21 @@ namespace SLACowryWise.Domain.DTOs.Savings
     {
         [JsonPropertyName("amount")]
         public string Amount { get; set; }
-        
+
         [JsonPropertyName("product_code")]
         public string ProductCode { get; set; }
 
         [JsonPropertyName("savings_id")]
         public string SavingsId { get; set; }
+
+        [JsonPropertyName("account_id")]
+        public string AccountId { get; set; }
+
+        [JsonPropertyName("customer_Id")]
+        public string CustomerId { get; set; }
+
+        [JsonPropertyName("sla_product_type")]
+        public int ProductType { get; set; }
     }
 
     public class FundSavingsAmount
@@ -380,6 +393,6 @@ namespace SLACowryWise.Domain.DTOs.Savings
         public string AssetType { get; set; }
     }
 
-   
+
 
 }

@@ -1,13 +1,11 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using SLACowryWise.Domain.Abstractions;
 using SLACowryWise.Domain.DTOs.Savings;
 using SLACowryWise.Domain.DTOs.Wallets;
+using System;
+using System.Threading.Tasks;
 
 namespace SLACowryWiseApi.Controllers
 {
@@ -48,7 +46,7 @@ namespace SLACowryWiseApi.Controllers
         {
             try
             {
-                if (string.IsNullOrEmpty(savingsId)) return BadRequest(new {Message = "The request is invalid!"});
+                if (string.IsNullOrEmpty(savingsId)) return BadRequest(new { Message = "The request is invalid!" });
                 var result = await _savingsService.GetSingleSavings(savingsId).ConfigureAwait(false);
                 return Ok(result);
             }
@@ -67,7 +65,7 @@ namespace SLACowryWiseApi.Controllers
         {
             try
             {
-                if (inputModel is null) return BadRequest(new {Message = "The request is invalid!"});
+                if (inputModel is null) return BadRequest(new { Message = "The request is invalid!" });
                 var result = await _savingsService.CreateSavings(inputModel).ConfigureAwait(false);
                 return Ok(result);
             }
@@ -78,7 +76,7 @@ namespace SLACowryWiseApi.Controllers
             }
         }
 
-        [HttpPost("api/savings/{savingsId}/save", Name = "FundSavings")]
+        [HttpPost("api/savings/{savingsId}/fund", Name = "FundSavings")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [Produces(typeof(FundSavingsDtoResponse))]
@@ -86,7 +84,7 @@ namespace SLACowryWiseApi.Controllers
         {
             try
             {
-                if (inputModel is null) return BadRequest(new {Message = "The request is invalid!"});
+                if (inputModel is null) return BadRequest(new { Message = "The request is invalid!" });
                 var result = await _savingsService.FundSavingsFromWallet(inputModel).ConfigureAwait(false);
                 return Ok(result);
             }
@@ -96,7 +94,7 @@ namespace SLACowryWiseApi.Controllers
                 throw new Exception("An error occured and your request cannot be fulfilled, please try later!");
             }
         }
-        
+
         [HttpPost("api/savings/{savingsId}/withdraw", Name = "SavingsWithdrawal")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -105,9 +103,9 @@ namespace SLACowryWiseApi.Controllers
         {
             try
             {
-                if (inputModel is null) return BadRequest(new {Message = "The request is invalid!"});
+                if (inputModel is null) return BadRequest(new { Message = "The request is invalid!" });
                 if (string.IsNullOrEmpty(savingsId))
-                    return BadRequest(new {Message = "The request must come with a valid savings id!"});
+                    return BadRequest(new { Message = "The request must come with a valid savings id!" });
                 inputModel.SavingsId = savingsId;
                 var result = await _savingsService.WithdrawFromSavings(inputModel).ConfigureAwait(false);
                 return Ok(result);
@@ -118,7 +116,7 @@ namespace SLACowryWiseApi.Controllers
                 throw new Exception("An error occured and your request cannot be fulfilled, please try later!");
             }
         }
-        
+
         [HttpPost("api/savings/rates", Name = "GetSavingsRates")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -127,7 +125,7 @@ namespace SLACowryWiseApi.Controllers
         {
             try
             {
-                if (string.IsNullOrEmpty(days)) return BadRequest(new {Message = "The request is invalid!"});
+                if (string.IsNullOrEmpty(days)) return BadRequest(new { Message = "The request is invalid!" });
                 var result = await _savingsService.GetSavingsRate(days).ConfigureAwait(false);
                 return Ok(result);
             }

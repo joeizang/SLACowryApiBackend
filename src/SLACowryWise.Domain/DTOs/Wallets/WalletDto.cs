@@ -86,6 +86,9 @@ namespace SLACowryWise.Domain.DTOs.Wallets
 
         [JsonPropertyName("currency_code")]
         public string CurrencyCode { get; set; }
+
+        [JsonPropertyName("customer_Id")]
+        public string CustomerId { get; set; }
     }
 
     public class CreateWalletResponseDto
@@ -225,7 +228,7 @@ namespace SLACowryWise.Domain.DTOs.Wallets
         [JsonPropertyName("amount")]
         public string Amount { get; set; }
     }
-    
+
     public class WalletRightPagination
     {
         [JsonPropertyName("next")]
@@ -303,7 +306,7 @@ namespace SLACowryWise.Domain.DTOs.Wallets
         [JsonPropertyName("status")]
         public string Status { get; set; }
     }
-    
+
     public class WalletPaginationMetadata
     {
         [JsonPropertyName("next")]
@@ -434,10 +437,14 @@ namespace SLACowryWise.Domain.DTOs.Wallets
     {
         [JsonPropertyName("product_code")]
         public string ProductCode { get; set; }
-        
+
         [JsonPropertyName("amount")]
         public string Amount { get; set; }
-        
+
         [JsonPropertyName("accountId")] public string AccountId { get; set; }
+
+        public string CustomerId { get; set; }
+
+        public string ProductType { get; set; }
     }
 }
