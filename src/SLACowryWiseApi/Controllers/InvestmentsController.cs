@@ -1,5 +1,3 @@
-using System;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -7,6 +5,8 @@ using SLACowryWise.Domain.Abstractions;
 using SLACowryWise.Domain.DTOs.Assets;
 using SLACowryWise.Domain.DTOs.Investments;
 using SLACowryWise.Domain.DTOs.Wallets;
+using System;
+using System.Threading.Tasks;
 
 namespace SLACowryWiseApi.Controllers
 {
@@ -21,7 +21,7 @@ namespace SLACowryWiseApi.Controllers
             _logger = logger;
             _investmentService = investmentService;
         }
-        
+
         [HttpGet("api/investments")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [Produces(typeof(InvestmentPaginatedDtoResponse))]
@@ -32,7 +32,7 @@ namespace SLACowryWiseApi.Controllers
                 .ConfigureAwait(false);
             return result is not null ? Ok(result) : Ok(new AssetsPaginatedResponse());
         }
-        
+
         [HttpGet("api/investments/{investmentId}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -41,7 +41,7 @@ namespace SLACowryWiseApi.Controllers
         {
             try
             {
-                if (string.IsNullOrEmpty(investmentId)) return BadRequest(new {Message = "The request is invalid!"});
+                if (string.IsNullOrEmpty(investmentId)) return BadRequest(new { Message = "The request is invalid!" });
                 var result = await _investmentService.GetSingleInvestment(investmentId).ConfigureAwait(false);
                 return Ok(result);
             }
@@ -51,7 +51,7 @@ namespace SLACowryWiseApi.Controllers
                 throw new Exception("An error occured and your request cannot be fulfilled, please try later!");
             }
         }
-        
+
         [HttpPost("api/investments")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -60,7 +60,7 @@ namespace SLACowryWiseApi.Controllers
         {
             try
             {
-                if (inputModel is null) return BadRequest(new {Message = "The request is invalid!"});
+                if (inputModel is null) return BadRequest(new { Message = "The request is invalid!" });
                 var result = await _investmentService.CreateInvestment(inputModel).ConfigureAwait(false);
                 return Ok(result);
             }
@@ -70,7 +70,7 @@ namespace SLACowryWiseApi.Controllers
                 throw new Exception("An error occured and your request cannot be fulfilled, please try later!");
             }
         }
-        
+
         [HttpPost("api/investments/{investmentId}/transfer")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -79,9 +79,9 @@ namespace SLACowryWiseApi.Controllers
         {
             try
             {
-                if (inputModel is null) return BadRequest(new {Message = "The request is invalid!"});
+                if (inputModel is null) return BadRequest(new { Message = "The request is invalid!" });
                 if (string.IsNullOrEmpty(investmentId))
-                    return BadRequest(new {Message = "A valid investment Id must accompany this request!"});
+                    return BadRequest(new { Message = "A valid investment Id must accompany this request!" });
                 inputModel.AccountId = investmentId;
                 var result = await _investmentService.FundInvestment(inputModel).ConfigureAwait(false);
                 return Ok(result);
@@ -92,18 +92,18 @@ namespace SLACowryWiseApi.Controllers
                 throw new Exception("An error occured and your request cannot be fulfilled, please try later!");
             }
         }
-        
+
         [HttpPost("api/investments/{investmentId}/liquidate")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [Produces(typeof(InvestmentLiquidatedDto))]
-        public async Task<IActionResult> LiquidateInvestment(string investmentId, string units)
+        public async Task<IActionResult> LiquidateInvestment(string investmentId, string units, string accountId, string customerId)
         {
             try
             {
-                if (string.IsNullOrEmpty(units)) return BadRequest(new {Message = "The request is invalid!"});
-                if (string.IsNullOrEmpty(investmentId)) return BadRequest(new {Message = "The request is invalid!"});
-                var result = await _investmentService.LiquidateInvestment(units, investmentId).ConfigureAwait(false);
+                if (string.IsNullOrEmpty(units)) return BadRequest(new { Message = "The request is invalid!" });
+                if (string.IsNullOrEmpty(investmentId)) return BadRequest(new { Message = "The request is invalid!" });
+                var result = await _investmentService.LiquidateInvestment(units, investmentId, accountId, customerId).ConfigureAwait(false);
                 return Ok(result);
             }
             catch (Exception e)
