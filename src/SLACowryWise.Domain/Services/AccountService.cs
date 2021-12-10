@@ -1,10 +1,9 @@
-using System;
-using System.Threading.Tasks;
 using RestSharp;
 using SLACowryWise.Domain.Abstractions;
 using SLACowryWise.Domain.Data;
 using SLACowryWise.Domain.DomainModels;
 using SLACowryWise.Domain.DTOs.Accounts;
+using System.Threading.Tasks;
 
 namespace SLACowryWise.Domain.Services
 {
@@ -73,6 +72,7 @@ namespace SLACowryWise.Domain.Services
             var client = await _service.InitializeClient().ConfigureAwait(false);
             var result = await client.ExecuteAsync<AccountCreationResponse>(request)
                 .ConfigureAwait(false);
+
             var acctCreated = new AccountCreated
             {
                 AccountCreationDto = result.Data

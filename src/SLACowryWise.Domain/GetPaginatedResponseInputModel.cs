@@ -5,9 +5,9 @@ namespace SLACowryWise.Domain
     public class GetPaginatedResponseInputModel
     {
         [JsonPropertyName("page_size")]
-        public string PageSize { get; set; }
+        public string PageSize { get; set; } = 20.ToString();
 
         [JsonPropertyName("page")]
-        public string Page { get; set; }
+        public string Page { get; set; } = 1.ToString();
     }
 }

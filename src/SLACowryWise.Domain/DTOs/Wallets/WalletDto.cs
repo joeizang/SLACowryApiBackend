@@ -310,7 +310,7 @@ namespace SLACowryWise.Domain.DTOs.Wallets
     public class WalletPaginationMetadata
     {
         [JsonPropertyName("next")]
-        public object Next { get; set; }
+        public string Next { get; set; }
 
         [JsonPropertyName("previous")]
         public string Previous { get; set; }

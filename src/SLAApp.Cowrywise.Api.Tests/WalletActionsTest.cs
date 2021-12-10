@@ -1,12 +1,10 @@
+using RestSharp;
+using RestSharp.Serializers.SystemTextJson;
+using SLACowryWise.Domain.DTOs.Wallets;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Text.Json;
 using System.Threading.Tasks;
-using RestSharp;
-using RestSharp.Serializers.SystemTextJson;
-using SLACowryWise.Domain.Configuration;
-using SLACowryWise.Domain.DTOs.Wallets;
-using SLACowryWise.Domain.Services;
 using Xunit;
 
 namespace SLAApp.Cowrywise.Api.Tests
@@ -28,7 +26,7 @@ namespace SLAApp.Cowrywise.Api.Tests
             var auth = new AuthenticationService(new HttpClient(), config);
             await auth.GetApiToken()
                 .ConfigureAwait(false);
-                
+
             var client = new RestClient("https://sandbox.embed.cowrywise.com");
             client.UseSystemTextJson(new JsonSerializerOptions
             {
@@ -38,7 +36,7 @@ namespace SLAApp.Cowrywise.Api.Tests
             {
                 {"Authorization", $"Bearer {auth.ApiToken.AccessToken}"}
             });
-                
+
             var request = new RestRequest(resource, method);
             return new AccountActionsTests.BootstrapProps { Client = client, Request = request };
         }
@@ -59,20 +57,14 @@ namespace SLAApp.Cowrywise.Api.Tests
         public async void GetAllWalletsReturnsWalletPaginatedResponseDto()
         {
             var bootstrap = await BootstrapTest("/api/v1/wallets", Method.GET);
-            bootstrap.Request.AddParameter("page", "2");
-            bootstrap.Request.AddParameter("page_count", 2);
+            bootstrap.Request.AddParameter("page", "2", ParameterType.GetOrPost);
+            bootstrap.Request.AddParameter("page_count", 20, ParameterType.GetOrPost);
             var result = await bootstrap.Client
                 .ExecuteAsync<WalletPaginatedDtoRoot>(bootstrap.Request)
                 .ConfigureAwait(false);
             Assert.NotNull(result.Data);
             Assert.IsType<WalletPaginatedDtoRoot>(result.Data);
             Assert.NotEmpty(result.Data.Data);
-        }
-
-        [Fact]
-        public async void GetSingleWalletReturns()
-        {
-            
         }
     }
 }

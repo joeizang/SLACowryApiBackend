@@ -56,7 +56,7 @@ namespace SLACowryWiseApi.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [Produces(typeof(SingleInvestmentResponseDto))]
-        public async Task<IActionResult> CreateWallet(CreateInvestmentInputModel inputModel)
+        public async Task<IActionResult> CreateWallet([FromBody] CreateInvestmentInputModel inputModel)
         {
             try
             {
@@ -75,7 +75,7 @@ namespace SLACowryWiseApi.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [Produces(typeof(TransferFromWalletResponseDto))]
-        public async Task<IActionResult> FundInvestment(string investmentId, WalletTransferInputModel inputModel)
+        public async Task<IActionResult> FundInvestment(string investmentId, [FromBody] WalletTransferInputModel inputModel)
         {
             try
             {
