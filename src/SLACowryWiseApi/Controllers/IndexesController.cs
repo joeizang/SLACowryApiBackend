@@ -24,10 +24,13 @@ namespace SLACowryWiseApi.Controllers
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [Produces(typeof(IndexPaginatedResponse))]
-        public async Task<IActionResult> GetIndexes([FromQuery]GetPaginatedResponseInputModel inputModel)
+        public async Task<IActionResult> GetIndexes([FromQuery] GetPaginatedResponseInputModel inputModel)
         {
             var result = await _indexService.GetIndexes(inputModel).ConfigureAwait(false);
-            return result is not null ? Ok(result) : Ok(new IndexPaginatedResponse());
+            if (result is not null)
+                return Ok(result);
+            else
+                return Ok(new IndexPaginatedResponse());
         }
 
         // GET api/<IndexesController>/5
@@ -40,7 +43,10 @@ namespace SLACowryWiseApi.Controllers
             try
             {
                 var result = await _indexService.GetIndexAssets(indexId).ConfigureAwait(false);
-                return result is not null ? Ok(result) : NotFound();
+                if (result is not null)
+                    return Ok(result);
+                else
+                    return NotFound();
             }
             catch (Exception e)
             {
@@ -57,7 +63,10 @@ namespace SLACowryWiseApi.Controllers
             try
             {
                 var result = await _indexService.GetSingleIndex(indexId).ConfigureAwait(false);
-                return result is not null ? Ok(result) : NotFound();
+                if (result is not null)
+                    return Ok(result);
+                else
+                    return NotFound();
             }
             catch (Exception e)
             {
@@ -80,7 +89,10 @@ namespace SLACowryWiseApi.Controllers
             try
             {
                 var result = await _indexService.CreateCustomIndex(inputModel).ConfigureAwait(false);
-                return result is not null ? Ok(result) : BadRequest("Index creation was not successful!!");
+                if (result is not null)
+                    return Ok(result);
+                else
+                    return BadRequest("Index creation was not successful!!");
             }
             catch (Exception e)
             {
@@ -96,7 +108,7 @@ namespace SLACowryWiseApi.Controllers
         [Produces(typeof(UpdateCustomIndexResponse))]
         public async Task<IActionResult> ModifyCustomIndex([FromBody] UpdateCustomIndexInputModel inputModel)
         {
-            if(inputModel is null && !ModelState.IsValid)
+            if (inputModel is null && !ModelState.IsValid)
             {
                 return BadRequest("Your request is in an inconsistent state, check your update submission!");
             }
@@ -104,7 +116,10 @@ namespace SLACowryWiseApi.Controllers
             try
             {
                 var result = await _indexService.UpdateCustomIndex(inputModel).ConfigureAwait(false);
-                return result is not null ? Ok(result) : BadRequest("Update was unsuccessful!");
+                if (result is not null)
+                    return Ok(result);
+                else
+                    return BadRequest("Update was unsuccessful!");
             }
             catch (Exception e)
             {
