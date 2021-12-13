@@ -1,16 +1,9 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
 using RestSharp;
@@ -19,7 +12,6 @@ using SLACowryWise.Domain.Abstractions;
 using SLACowryWise.Domain.Configuration;
 using SLACowryWise.Domain.Data;
 using SLACowryWise.Domain.DomainModels;
-using SLACowryWise.Domain.DTOs.Accounts;
 using SLACowryWise.Domain.Extensions;
 using SLACowryWise.Domain.Services;
 using SLACowryWise.Domain.WebHookUtilities;
@@ -64,11 +56,11 @@ namespace SLACowryWiseApi
             services.AddTransient<ITransactionService, TransactionsService>();
             services.AddTransient<IIndex, IndexService>();
             services.AddTransient<ITradeStockService, TradeStockService>();
-            services.AddScoped<ISignatureGenerator,SignatureGenerator>();
+            services.AddScoped<ISignatureGenerator, SignatureGenerator>();
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo {Title = "SLACowryWiseApi", Version = "v1"});
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "SLACowryWiseApi", Version = "v1" });
             });
         }
 
@@ -79,12 +71,12 @@ namespace SLACowryWiseApi
             {
                 app.UseDeveloperExceptionPage();
                 app.UseSwagger();
-                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "SLACowryWiseApi v1"));
+                app.UseSwaggerUI(c => c.SwaggerEndpoint("../swagger/v1/swagger.json", "SLACowryWiseApi v1"));
             }
 
             app.UseDeveloperExceptionPage();
             app.UseSwagger();
-            app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "SLACowryWiseApi v1"));
+            app.UseSwaggerUI(c => c.SwaggerEndpoint("../swagger/v1/swagger.json", "SLACowryWiseApi v1"));
 
             app.UseHttpsRedirection();
 

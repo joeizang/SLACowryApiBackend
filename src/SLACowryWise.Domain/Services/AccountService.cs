@@ -35,7 +35,7 @@ namespace SLACowryWise.Domain.Services
         }
         public async Task<AccountPortfolioResponse> GetPortfolio(string id)
         {
-            IRestRequest request = new RestRequest($"/api/v1/accounts/{id}", Method.GET);
+            IRestRequest request = new RestRequest($"/api/v1/accounts/{id}/portfolio", Method.GET);
             var client = await _service.InitializeClient().ConfigureAwait(false);
             var result = await client.ExecuteAsync<AccountPortfolioResponse>(request)
                 .ConfigureAwait(false);
