@@ -22,7 +22,7 @@ namespace SLACowryWiseApi.Controllers
             _service = service;
         }
         
-        [HttpPost("api/settlements")]
+        [HttpPost("api/settlements/withdrawtobank")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
