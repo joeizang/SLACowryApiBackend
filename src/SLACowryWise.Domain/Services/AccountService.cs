@@ -150,8 +150,8 @@ namespace SLACowryWise.Domain.Services
         public async Task<AccountBankUpdateResponse> UpdateBankDetails(AddBankInputModel inputModel)
         {
             IRestRequest request = new RestRequest($"/api/v1/accounts/{inputModel.AccountID}/bank", Method.POST);
-            request.AddParameter("identity_type", inputModel.BankCode, ParameterType.GetOrPost);
-            request.AddParameter("identity_value", inputModel.AccountNumber, ParameterType.GetOrPost);
+            request.AddParameter("bank_code", inputModel.BankCode, ParameterType.GetOrPost);
+            request.AddParameter("account_number", inputModel.AccountNumber, ParameterType.GetOrPost);
             var client = await _service.InitializeClient().ConfigureAwait(false);
             var result = await client.ExecuteAsync<AccountBankUpdateResponse>(request)
                 .ConfigureAwait(false);
