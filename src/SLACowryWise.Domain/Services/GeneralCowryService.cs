@@ -3,7 +3,6 @@ using SLACowryWise.Domain.Abstractions;
 using SLACowryWise.Domain.Data;
 using SLACowryWise.Domain.DomainModels;
 using SLACowryWise.Domain.DTOs;
-using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 
@@ -22,20 +21,20 @@ namespace SLACowryWise.Domain.Services
         public async Task<BankResponse> GetBanks(GetPaginatedResponseInputModel inputModel)
         {
             // fetch from db to avoid trip to cowry
-            var cachedResponse = await _cowryCache.GetDocsAsync().ConfigureAwait(false);
-            if (cachedResponse is not null && cachedResponse.Single().Banks.Data.Any()) return cachedResponse.Single().Banks;
+            //var cachedResponse = await _cowryCache.GetDocsAsync().ConfigureAwait(false);
+            //if (cachedResponse is not null && cachedResponse.Single().Banks.Data.Any()) return cachedResponse.Single().Banks;
             // if db is empty then call cowry and populate
             var fromCowry = await FetchBanksFromCowry(inputModel).ConfigureAwait(false);
             if (fromCowry is null && fromCowry.StatusCode >= HttpStatusCode.BadRequest)
             {
                 return fromCowry.Data;
             }
-            // linq to avoid duplicates in db cache.
-            var newbanks = new CowryBanks
-            {
-                Banks = fromCowry.Data,
-            };
-            await _cowryCache.CreateOneAsync(newbanks).ConfigureAwait(false);
+            //// linq to avoid duplicates in db cache.
+            //var newbanks = new CowryBanks
+            //{
+            //    Banks = fromCowry.Data,
+            //};
+            //await _cowryCache.CreateOneAsync(newbanks).ConfigureAwait(false);
             return fromCowry.Data;
         }
 
