@@ -49,6 +49,7 @@ namespace SLACowryWiseApi
             services.AddInvestmentTypesService();
             services.AddSavingsServiceTypes();
             services.AddWalletServiceTypes();
+            services.AddGeneralCowryServices();
 
             services.AddTransient<IAuthenticationService, AuthenticationService>();
             services.AddTransient<IAssetsService, AssetsService>();
