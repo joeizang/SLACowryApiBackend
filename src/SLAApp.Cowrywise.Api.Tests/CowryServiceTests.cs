@@ -19,13 +19,14 @@ namespace SLAApp.Cowrywise.Api.Tests
             var bootstrap = await BootstrapTest("api/v1/misc/banks", Method.GET).ConfigureAwait(false);
             var input = new GetPaginatedResponseInputModel
             {
-                Page = "7",
-                PageSize = "20"
+                Page = "3",
+                PageSize = "30"
             };
             bootstrap.Request.AddParameter("page", input.Page, ParameterType.GetOrPost);
             bootstrap.Request.AddParameter("page_size", input.PageSize, ParameterType.GetOrPost);
             var result = await bootstrap.Client.ExecuteAsync<BankResponse>(bootstrap.Request).ConfigureAwait(false);
             Assert.NotNull(result.Data);
+            Assert.Contains("successful", result.Data.Message);
         }
 
         private async Task<AccountActionsTests.BootstrapProps> BootstrapTest(string resource, RestSharp.Method method)
