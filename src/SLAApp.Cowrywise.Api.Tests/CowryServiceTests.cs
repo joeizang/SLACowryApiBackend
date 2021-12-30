@@ -19,8 +19,8 @@ namespace SLAApp.Cowrywise.Api.Tests
             var bootstrap = await BootstrapTest("api/v1/misc/banks", Method.GET).ConfigureAwait(false);
             var input = new GetPaginatedResponseInputModel
             {
-                Page = "3",
-                PageSize = "30"
+                Page = "1",
+                PageSize = "20"
             };
             bootstrap.Request.AddParameter("page", input.Page, ParameterType.GetOrPost);
             bootstrap.Request.AddParameter("page_size", input.PageSize, ParameterType.GetOrPost);

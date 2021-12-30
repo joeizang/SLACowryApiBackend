@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using SLACowryWise.Domain;
 using SLACowryWise.Domain.Abstractions;
 using SLACowryWise.Domain.DTOs;
 using System.Threading.Tasks;
@@ -22,9 +21,9 @@ namespace SLACowryWiseApi.Controllers
         [HttpGet("api/banks")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [Produces(typeof(BankResponse))]
-        public async Task<IActionResult> Get([FromQuery] GetPaginatedResponseInputModel model)
+        public async Task<IActionResult> Get()
         {
-            var result = await _service.GetBanks(model).ConfigureAwait(false);
+            var result = await _service.GetBanks().ConfigureAwait(false);
             return Ok(result);
         }
 

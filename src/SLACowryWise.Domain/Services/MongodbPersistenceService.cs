@@ -12,7 +12,7 @@ namespace SLACowryWise.Domain.Services
     {
         private readonly IMongoCollection<T> _genericCollection;
 
-        public string CollectionName { get; set; } 
+        public string CollectionName { get; set; }
         public MongodbPersistenceService(IMongoDatabaseSettings settings)
         {
             var client = new MongoClient(settings.ConnectionString);
@@ -47,7 +47,7 @@ namespace SLACowryWise.Domain.Services
 
         public async Task<List<T>> GetDocsAsync()
         {
-            var cursor = await _genericCollection.FindAsync(g => true).ConfigureAwait(false);
+            var cursor = await _genericCollection.FindAsync(t => true).ConfigureAwait(false);
             var result = await cursor.ToListAsync().ConfigureAwait(false);
             return result;
         }
