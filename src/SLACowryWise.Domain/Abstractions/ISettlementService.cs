@@ -27,16 +27,73 @@ namespace SLACowryWise.Domain.Abstractions
         public string Description { get; set; }
     }
 
+    public class SettlementFee
+    {
+        [JsonPropertyName("value")]
+        public string Value { get; set; }
+
+        [JsonPropertyName("currency_code")]
+        public string CurrencyCode { get; set; }
+    }
+
+    public class SettlementAmount
+    {
+        [JsonPropertyName("value")]
+        public string Value { get; set; }
+
+        [JsonPropertyName("currency_code")]
+        public string CurrencyCode { get; set; }
+    }
+
+    public class SettlementSource
+    {
+        [JsonPropertyName("id")]
+        public string Id { get; set; }
+
+        [JsonPropertyName("name")]
+        public string Name { get; set; }
+
+        [JsonPropertyName("account_id")]
+        public string AccountId { get; set; }
+
+        [JsonPropertyName("account_name")]
+        public string AccountName { get; set; }
+
+        [JsonPropertyName("account_email")]
+        public string AccountEmail { get; set; }
+
+        [JsonPropertyName("product_code")]
+        public string ProductCode { get; set; }
+
+        [JsonPropertyName("asset_type")]
+        public string AssetType { get; set; }
+    }
+
+    public class SettlementDestination
+    {
+        [JsonPropertyName("asset_type")]
+        public string AssetType { get; set; }
+
+        [JsonPropertyName("bank")]
+        public string Bank { get; set; }
+
+        [JsonPropertyName("account_number")]
+        public string AccountNumber { get; set; }
+
+        [JsonPropertyName("account_name")]
+        public string AccountName { get; set; }
+    }
+
     public class SettlementPayload
     {
         [JsonPropertyName("id")]
         public string Id { get; set; }
 
-        [JsonPropertyName("amount")]
-        public double Amount { get; set; }
+        [JsonPropertyName("fee")]
+        public SettlementFee Fee { get; set; }
 
-        [JsonPropertyName("status")]
-        public string Status { get; set; }
+        [JsonPropertyName("amount")]
+        public SettlementAmount Amount { get; set; }
 
         [JsonPropertyName("reference")]
         public string Reference { get; set; }
@@ -44,29 +101,17 @@ namespace SLACowryWise.Domain.Abstractions
         [JsonPropertyName("description")]
         public string Description { get; set; }
 
-        [JsonPropertyName("date")]
-        public DateTime Date { get; set; }
+        [JsonPropertyName("source")]
+        public SettlementSource Source { get; set; }
 
-        [JsonPropertyName("owner_id")]
-        public string OwnerId { get; set; }
+        [JsonPropertyName("destination")]
+        public SettlementDestination Destination { get; set; }
 
-        [JsonPropertyName("owner_name")]
-        public string OwnerName { get; set; }
+        [JsonPropertyName("status")]
+        public string Status { get; set; }
 
-        [JsonPropertyName("owner_email")]
-        public string OwnerEmail { get; set; }
-
-        [JsonPropertyName("source_asset")]
-        public string SourceAsset { get; set; }
-
-        [JsonPropertyName("bank_name")]
-        public string BankName { get; set; }
-
-        [JsonPropertyName("account_number")]
-        public string AccountNumber { get; set; }
-
-        [JsonPropertyName("account_name")]
-        public string AccountName { get; set; }
+        [JsonPropertyName("transaction_date")]
+        public DateTime TransactionDate { get; set; }
     }
 
     public class SettlementResponseDto
