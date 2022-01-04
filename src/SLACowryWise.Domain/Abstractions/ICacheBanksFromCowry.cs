@@ -4,8 +4,10 @@ using System.Threading.Tasks;
 
 namespace SLACowryWise.Domain.Abstractions
 {
-    public interface IGeneralCowryService
+    public interface ICacheBanksFromCowry
     {
-        Task<List<Bank>> GetBanks();
+        string CollectionName { get; set; }
+
+        Task<List<Bank>> GetDocsAsync();
     }
 }

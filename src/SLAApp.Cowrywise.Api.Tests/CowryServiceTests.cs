@@ -1,7 +1,10 @@
 ﻿using RestSharp;
 using RestSharp.Serializers.SystemTextJson;
 using SLACowryWise.Domain;
+using SLACowryWise.Domain.Abstractions;
+using SLACowryWise.Domain.Data;
 using SLACowryWise.Domain.DTOs;
+using SLACowryWise.Domain.Services;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Text.Json;
@@ -27,6 +30,20 @@ namespace SLAApp.Cowrywise.Api.Tests
             var result = await bootstrap.Client.ExecuteAsync<BankResponse>(bootstrap.Request).ConfigureAwait(false);
             Assert.NotNull(result.Data);
             Assert.Contains("successful", result.Data.Message);
+        }
+
+        [Fact]
+        public async void GetBanksFromDb()
+        {
+            IMongoDatabaseSettings settings = new MongoDatabaseSettings
+            {
+                ConnectionString = "mongodb://localhost:27017",
+                DatabaseName = "SLACowryWiseDb",
+                CollectionName = "CowryBanks"
+            };
+            ICacheBanksFromCowry cache = new CacheBanksFromCowry(settings);
+            var result = await cache.GetDocsAsync().ConfigureAwait(false);
+            Assert.IsType<List<Bank>>(result);
         }
 
         private async Task<AccountActionsTests.BootstrapProps> BootstrapTest(string resource, RestSharp.Method method)

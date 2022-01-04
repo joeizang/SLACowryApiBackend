@@ -1,12 +1,23 @@
-﻿using SLACowryWise.Domain.Abstractions;
+﻿using MongoDB.Bson;
+using MongoDB.Bson.Serialization.Attributes;
 using SLACowryWise.Domain.DTOs;
-using SLACowryWise.Domain.Services;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace SLACowryWise.Domain.DomainModels
 {
-    [BsonCollection("CowryBanks")]
-    public class CowryBanks : BaseDomainModel
+
+    public class CowryBanks
     {
-        public BankResponse Banks { get; set; }
+        public List<Bank> Banks { get; set; }
+
+        [BsonElement("CreatedAt")]
+        public DateTimeOffset CreatedAt { get; set; } = DateTimeOffset.UtcNow;
+
+        [Key]
+        [BsonId]
+        [BsonRepresentation(BsonType.Int32)]
+        public int Id { get; set; }
     }
 }

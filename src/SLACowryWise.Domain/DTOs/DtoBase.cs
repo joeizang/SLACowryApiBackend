@@ -1,3 +1,4 @@
+using SLACowryWise.Domain.Services;
 using System.Collections.Generic;
 using System.Text.Json.Serialization;
 
@@ -15,6 +16,7 @@ namespace SLACowryWise.Domain.DTOs
         public string Status { get; set; }
     }
 
+    [BsonCollection("CowryBanks")]
     public class Bank
     {
         [JsonPropertyName("id")]

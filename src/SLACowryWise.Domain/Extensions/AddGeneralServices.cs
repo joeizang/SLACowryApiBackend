@@ -8,7 +8,7 @@ namespace SLACowryWise.Domain.Extensions
     {
         public static void AddGeneralCowryServices(this IServiceCollection services)
         {
-            services.AddTransient<ICacheBankFromCowry, CacheBanksFromCowry>();
+            services.AddTransient<ICacheBanksFromCowry, CacheBanksFromCowry>();
             services.AddTransient<IGeneralCowryService, GeneralCowryService>();
         }
     }

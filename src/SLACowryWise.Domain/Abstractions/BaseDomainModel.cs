@@ -12,12 +12,12 @@ namespace SLACowryWise.Domain.Abstractions
             CreatedAt = DateTimeOffset.UtcNow;
         }
 
+        [BsonElement("CreatedAt")]
+        public DateTimeOffset CreatedAt { get; set; }
+
         [Key]
         [BsonId]
         [BsonRepresentation(BsonType.ObjectId)]
         public string Id { get; set; }
-
-        [BsonElement("CreatedAt")]
-        public DateTimeOffset CreatedAt { get; set; }
     }
 }
