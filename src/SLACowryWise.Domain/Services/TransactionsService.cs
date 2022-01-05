@@ -1,7 +1,7 @@
-using System.Threading.Tasks;
 using RestSharp;
 using SLACowryWise.Domain.Abstractions;
 using SLACowryWise.Domain.DTOs.Transactions;
+using System.Threading.Tasks;
 
 namespace SLACowryWise.Domain.Services
 {
@@ -63,7 +63,7 @@ namespace SLACowryWise.Domain.Services
 
         public async Task<GetDepositsPaginatedResponse> GetAllDeposits(GetPaginatedResponseInputModel inputModel)
         {
-            IRestRequest request = new RestRequest("/api/v1/deposits", Method.POST);
+            IRestRequest request = new RestRequest("/api/v1/deposits", Method.GET);
             request.AddParameter("page", inputModel.Page, ParameterType.GetOrPost);
             request.AddParameter("page_size", inputModel.PageSize, ParameterType.GetOrPost);
 
@@ -75,7 +75,7 @@ namespace SLACowryWise.Domain.Services
 
         public async Task<GetAllWithdrawalsPaginatedResponse> GetAllWithdrawals(GetPaginatedResponseInputModel inputModel)
         {
-            IRestRequest request = new RestRequest("/api/v1/withdrawals", Method.POST);
+            IRestRequest request = new RestRequest("/api/v1/withdrawals", Method.GET);
             request.AddParameter("page", inputModel.Page, ParameterType.GetOrPost);
             request.AddParameter("page_size", inputModel.PageSize, ParameterType.GetOrPost);
 

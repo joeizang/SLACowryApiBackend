@@ -1,13 +1,12 @@
+using Microsoft.Extensions.Options;
+using SLACowryWise.Domain.Abstractions;
+using SLACowryWise.Domain.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text.Json;
 using System.Threading.Tasks;
-using Microsoft.Extensions.Options;
-using Microsoft.VisualBasic;
-using SLACowryWise.Domain.Abstractions;
-using SLACowryWise.Domain.Configuration;
 
 namespace SLACowryWise.Domain.Services
 {
@@ -19,6 +18,12 @@ namespace SLACowryWise.Domain.Services
         public AuthenticationService(IHttpClientFactory httpClient, IOptions<AuthenticationConfiguration> config)
         {
             _http = httpClient.CreateClient();
+            _config = config.Value;
+        }
+
+        public AuthenticationService(HttpClient httpClient, IOptions<AuthenticationConfiguration> config)
+        {
+            _http = httpClient;
             _config = config.Value;
         }
 
@@ -53,7 +58,7 @@ namespace SLACowryWise.Domain.Services
                 var options = new JsonSerializerOptions
                 {
                     PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
-                
+
                 };
                 ApiToken = JsonSerializer.Deserialize<ApiToken>(payload, options);
                 return this;
@@ -63,7 +68,7 @@ namespace SLACowryWise.Domain.Services
                 throw;
             }
         }
-        
+
         public async Task RefreshToken()
         {
             await GetApiToken().ConfigureAwait(false);
