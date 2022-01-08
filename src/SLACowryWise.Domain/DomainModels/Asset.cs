@@ -1,8 +1,10 @@
-﻿using SLACowryWise.Domain.Abstractions;
+﻿using MongoDB.Bson;
+using MongoDB.Bson.Serialization.Attributes;
+using SLACowryWise.Domain.Abstractions;
 using SLACowryWise.Domain.DTOs.Assets;
 using System;
 using System.Collections.Generic;
-using System.Text;
+using System.ComponentModel.DataAnnotations;
 
 namespace SLACowryWise.Domain.DomainModels
 {
@@ -19,6 +21,19 @@ namespace SLACowryWise.Domain.DomainModels
     public class SingleAssetData : BaseDomainModel
     {
         public SingleAssetsResponse SingleAssetsResponse { get; set; }
+    }
+
+    public class CachedAssets
+    {
+        public List<SingleAssetsResponse> Assets { get; set; }
+
+        [BsonElement("CreatedAt")]
+        public DateTimeOffset CreatedAt { get; set; } = DateTimeOffset.UtcNow;
+
+        [Key]
+        [BsonId]
+        [BsonRepresentation(BsonType.Int32)]
+        public int Id { get; set; }
     }
 
 }

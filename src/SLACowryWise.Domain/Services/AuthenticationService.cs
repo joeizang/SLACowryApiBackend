@@ -21,11 +21,11 @@ namespace SLACowryWise.Domain.Services
             _config = config.Value;
         }
 
-        public AuthenticationService(HttpClient httpClient, IOptions<AuthenticationConfiguration> config)
-        {
-            _http = httpClient;
-            _config = config.Value;
-        }
+        //public AuthenticationService(HttpClient httpClient, IOptions<AuthenticationConfiguration> config)
+        //{
+        //    _http = httpClient;
+        //    _config = config.Value;
+        //}
 
         public string GrantType => "client_credentials";
 

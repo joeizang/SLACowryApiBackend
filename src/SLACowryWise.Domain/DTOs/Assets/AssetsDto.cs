@@ -1,10 +1,17 @@
+using MongoDB.Bson;
+using MongoDB.Bson.Serialization.Attributes;
+using SLACowryWise.Domain.Services;
 using System.Collections.Generic;
 using System.Text.Json.Serialization;
 
 namespace SLACowryWise.Domain.DTOs.Assets
 {
+    [BsonCollection("CowryInvestmentAssets")]
     public class AssetsPayload
     {
+        [BsonId]
+        public ObjectId Id { get; set; }
+
         [JsonPropertyName("asset_id")]
         public string AssetId { get; set; }
 
@@ -19,6 +26,9 @@ namespace SLACowryWise.Domain.DTOs.Assets
 
         [JsonPropertyName("country")]
         public string Country { get; set; }
+
+        [JsonPropertyName("currency")]
+        public string Currency { get; set; }
 
         [JsonPropertyName("is_indexable")]
         public bool IsIndexable { get; set; }
@@ -43,6 +53,9 @@ namespace SLACowryWise.Domain.DTOs.Assets
 
         [JsonPropertyName("ytd")]
         public double Ytd { get; set; }
+
+        [JsonPropertyName("annual_returns")]
+        public double AnnualReturns { get; set; }
     }
 
     public class AssetsMeta
@@ -65,6 +78,9 @@ namespace SLACowryWise.Domain.DTOs.Assets
         [JsonPropertyName("is_equity_fund")]
         public bool IsEquityFund { get; set; }
 
+        [JsonPropertyName("risk_class")]
+        public string RiskClass { get; set; }
+
         [JsonPropertyName("price")]
         public Price Price { get; set; }
     }
@@ -76,7 +92,7 @@ namespace SLACowryWise.Domain.DTOs.Assets
 
         [JsonPropertyName("data")]
         public List<AssetsPayload> Data { get; set; }
-        
+
     }
 
     public class AssetsPaginatedResponseInput : GetPaginatedResponseInputModel
@@ -93,7 +109,7 @@ namespace SLACowryWise.Domain.DTOs.Assets
         public AssetsPayload Data { get; set; }
 
     }
-    
+
     public class AssetPrice
     {
         [JsonPropertyName("currency")]
@@ -185,10 +201,10 @@ namespace SLACowryWise.Domain.DTOs.Assets
     {
         [JsonPropertyName("pagination")]
         public ModelPagination Pagination { get; set; }
-        
+
         [JsonPropertyName("data")] public List<SingleAssetData> Data { get; set; }
     }
-    
+
     public class AssetsTestPagination
     {
         [JsonPropertyName("next")]

@@ -1,16 +1,23 @@
-using System.Threading.Tasks;
+using MongoDB.Driver;
 using RestSharp;
 using SLACowryWise.Domain.Abstractions;
+using SLACowryWise.Domain.Data;
 using SLACowryWise.Domain.DTOs.Assets;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace SLACowryWise.Domain.Services
 {
     public class AssetsService : IAssetsService
     {
+        private readonly ICachedAssetsService _assets;
         private readonly IHttpService _assetService;
 
-        public AssetsService(IHttpService assetService)
+        public AssetsService(IHttpService assetService, ICachedAssetsService assets)
         {
+            _assets = assets;
             _assetService = assetService;
         }
         public async Task<AssetsPaginatedResponse> GetAllAssets(AssetsPaginatedResponseInput inputModel)
@@ -39,7 +46,7 @@ namespace SLACowryWise.Domain.Services
             var result = await client.ExecuteAsync<AssetsPaginatedResponse>(request)
                 .ConfigureAwait(false);
             return result.Data;
-         }
+        }
 
         public async Task<SingleAssetRoot> GetSingleAsset(string id)
         {
@@ -49,5 +56,41 @@ namespace SLACowryWise.Domain.Services
             return result.Data;
         }
 
+        public async Task<List<AssetsPayload>> GetCahedAssets()
+        {
+            var result = await _assets.GetDocsAsync().ConfigureAwait(false);
+            if (result == null) return new List<AssetsPayload>();
+            return result;
+        }
+
+    }
+
+    public class CachedAssetsService : ICachedAssetsService
+    {
+        public CachedAssetsService(IMongoDatabaseSettings settings)
+        {
+            var client = new MongoClient(settings.ConnectionString);
+            var db = client.GetDatabase(settings.DatabaseName);
+            _assetsCollection = db.GetCollection<AssetsPayload>(ProvideCollectionName(typeof(AssetsPayload)));
+        }
+
+        private readonly IMongoCollection<AssetsPayload> _assetsCollection;
+
+        public string CollectionName { get; set; }
+
+        public async Task<List<AssetsPayload>> GetDocsAsync()
+        {
+            var cursor = await _assetsCollection.FindAsync(t => true).ConfigureAwait(false);
+            var result = await cursor.ToListAsync().ConfigureAwait(false);
+            return result;
+        }
+
+        private protected string ProvideCollectionName(Type documentType)
+        {
+            return ((BsonCollectionAttribute)documentType.GetCustomAttributes(
+                typeof(BsonCollectionAttribute),
+                true)
+            .FirstOrDefault())?.CollectionName;
+        }
     }
 }

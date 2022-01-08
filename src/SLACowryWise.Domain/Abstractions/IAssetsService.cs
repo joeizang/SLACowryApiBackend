@@ -1,6 +1,6 @@
-using System.Threading.Tasks;
-using RestSharp;
 using SLACowryWise.Domain.DTOs.Assets;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace SLACowryWise.Domain.Abstractions
 {
@@ -8,5 +8,14 @@ namespace SLACowryWise.Domain.Abstractions
     {
         Task<AssetsPaginatedResponse> GetAllAssets(AssetsPaginatedResponseInput inputModel);
         Task<SingleAssetRoot> GetSingleAsset(string id);
+
+        Task<List<AssetsPayload>> GetCahedAssets();
+    }
+
+    public interface ICachedAssetsService
+    {
+        string CollectionName { get; set; }
+
+        Task<List<AssetsPayload>> GetDocsAsync();
     }
 }
