@@ -441,7 +441,8 @@ namespace SLACowryWise.Domain.DTOs.Wallets
         [JsonPropertyName("amount")]
         public string Amount { get; set; }
 
-        [JsonPropertyName("accountId")] public string AccountId { get; set; }
+        [JsonPropertyName("accountId")]
+        public string AccountId { get; set; }
 
         public string CustomerId { get; set; }
 

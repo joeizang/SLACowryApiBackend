@@ -393,6 +393,59 @@ namespace SLACowryWise.Domain.DTOs.Savings
         public string AssetType { get; set; }
     }
 
+    public class SavingCreatedPayload
+    {
+        [JsonPropertyName("savings_id")]
+        public string SavingsId { get; set; }
+
+        [JsonPropertyName("account_id")]
+        public string AccountId { get; set; }
+
+        [JsonPropertyName("name")]
+        public string Name { get; set; }
+
+        [JsonPropertyName("product_code")]
+        public string ProductCode { get; set; }
+
+        [JsonPropertyName("currency")]
+        public string Currency { get; set; }
+
+        [JsonPropertyName("principal")]
+        public string Principal { get; set; }
+
+        [JsonPropertyName("returns")]
+        public string Returns { get; set; }
+
+        [JsonPropertyName("balance")]
+        public string Balance { get; set; }
+
+        [JsonPropertyName("interest_enabled")]
+        public bool InterestEnabled { get; set; }
+
+        [JsonPropertyName("interest_rate")]
+        public string InterestRate { get; set; }
+
+        [JsonPropertyName("maturity_date")]
+        public string MaturityDate { get; set; }
+
+        [JsonPropertyName("created_on")]
+        public DateTime CreatedOn { get; set; }
+    }
+
+    public class SavingsCreatedResponse
+    {
+        [JsonPropertyName("data")]
+        public SavingCreatedPayload Data { get; set; }
+
+        [JsonPropertyName("errors")]
+        public object Errors { get; set; }
+
+        [JsonPropertyName("message")]
+        public string Message { get; set; }
+
+        [JsonPropertyName("status")]
+        public string Status { get; set; }
+    }
 
 
 }

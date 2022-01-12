@@ -12,7 +12,7 @@ namespace SLACowryWise.Domain.DomainModels
     [BsonCollection("SavingsCreated")]
     public class CreateSavings : BaseDomainModel
     {
-        public CreateSavingsResponse CreateSavingsResponse { get; set; }
+        public SavingsCreatedResponse CreateSavingsResponse { get; set; }
         public string AccountId { get; set; }
 
         public string CustomerId { get; set; }

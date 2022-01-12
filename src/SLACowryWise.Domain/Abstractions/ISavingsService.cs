@@ -1,8 +1,7 @@
-using System.Threading.Tasks;
-using RestSharp;
 using SLACowryWise.Domain.DomainModels;
 using SLACowryWise.Domain.DTOs.Savings;
 using SLACowryWise.Domain.DTOs.Wallets;
+using System.Threading.Tasks;
 
 namespace SLACowryWise.Domain.Abstractions
 {
@@ -10,7 +9,7 @@ namespace SLACowryWise.Domain.Abstractions
     {
         Task<SavingsPaginatedResponseDto> GetAllSavings();
 
-        Task<CreateSavingsResponse> CreateSavings(CreateSavingsInputModel inputModel);
+        Task<SavingsCreatedResponse> CreateSavings(CreateSavingsInputModel inputModel);
 
         Task<SingleSavingsByIdResponseDto> GetSingleSavings(string savingsId);
 

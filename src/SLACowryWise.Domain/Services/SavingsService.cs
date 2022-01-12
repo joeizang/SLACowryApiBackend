@@ -31,7 +31,7 @@ namespace SLACowryWise.Domain.Services
             return result.Data;
         }
 
-        public async Task<CreateSavingsResponse> CreateSavings(CreateSavingsInputModel inputModel)
+        public async Task<SavingsCreatedResponse> CreateSavings(CreateSavingsInputModel inputModel)
         {
             IRestRequest request = new RestRequest("/api/v1/savings", Method.POST);
             request.AddParameter("account_id", inputModel.AccountId, ParameterType.GetOrPost);
@@ -39,7 +39,7 @@ namespace SLACowryWise.Domain.Services
             request.AddParameter("days", inputModel.Days, ParameterType.GetOrPost);
             request.AddParameter("interest_enabled", inputModel.InterestEnabled, ParameterType.GetOrPost);
             var client = await _service.InitializeClient().ConfigureAwait(false);
-            var result = await client.ExecuteAsync<CreateSavingsResponse>(request)
+            var result = await client.ExecuteAsync<SavingsCreatedResponse>(request)
                 .ConfigureAwait(false);
             var created = new CreateSavings
             {
