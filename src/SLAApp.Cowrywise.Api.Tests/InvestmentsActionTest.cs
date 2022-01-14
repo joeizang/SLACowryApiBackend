@@ -1,14 +1,10 @@
+using RestSharp;
+using SLACowryWise.Domain.DTOs.Investments;
+using SLACowryWise.Domain.DTOs.Wallets;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
-using System.Text.Json;
 using System.Threading.Tasks;
-using RestSharp;
-using RestSharp.Serializers.SystemTextJson;
-using SLACowryWise.Domain.Configuration;
-using SLACowryWise.Domain.DTOs.Investments;
-using SLACowryWise.Domain.DTOs.Wallets;
-using SLACowryWise.Domain.Services;
 using Xunit;
 
 namespace SLAApp.Cowrywise.Api.Tests
@@ -24,7 +20,7 @@ namespace SLAApp.Cowrywise.Api.Tests
         [Fact]
         public async void CreateInvestment_Returns()
         {
-            var bootstrap = await BootstrapTest("/api/v1/investments", Method.POST);
+            var bootstrap = await BootstrapTest("/api/v1/investments", Method.Post);
             bootstrap.Request.AddParameter("account_id", "d1e08f90b4454a9db033ff4e0b39a6e0", ParameterType.GetOrPost);
             bootstrap.Request.AddParameter("asset_code", AssetCode1, ParameterType.GetOrPost);
             var result = await bootstrap.Client
@@ -37,7 +33,7 @@ namespace SLAApp.Cowrywise.Api.Tests
         [Fact]
         public async void GetAllInvestments_ReturnsInvestmentPaginatedResponse()
         {
-            var bootstrap = await BootstrapTest("/api/v1/investments", Method.GET);
+            var bootstrap = await BootstrapTest("/api/v1/investments", Method.Get);
             bootstrap.Request.AddParameter("asset_code", AssetCode1, ParameterType.GetOrPost);
             var result = await bootstrap.Client
                 .ExecuteAsync<InvestmentPaginatedDtoResponse>(bootstrap.Request)
@@ -50,7 +46,7 @@ namespace SLAApp.Cowrywise.Api.Tests
         [Fact]
         public async void FundInvestmentByProductCode_Returns()
         {
-            var bootstrap = await BootstrapTest($"/api/v1/wallets/{WalletID1}/transfer", Method.POST);
+            var bootstrap = await BootstrapTest($"/api/v1/wallets/{WalletID1}/transfer", Method.Post);
             bootstrap.Request.AddParameter("product_code", "PRCDE6909476183", ParameterType.GetOrPost);
             bootstrap.Request.AddParameter("amount", "5000000", ParameterType.GetOrPost);
             var result = await bootstrap.Client
@@ -64,7 +60,7 @@ namespace SLAApp.Cowrywise.Api.Tests
         [Fact]
         public async void LiquidateInvestment_ReturnsLiquidatedResponse()
         {
-            var bootstrap = await BootstrapTest($"/api/v1/investments/{investmentId}/liquidate", Method.POST);
+            var bootstrap = await BootstrapTest($"/api/v1/investments/{investmentId}/liquidate", Method.Post);
             bootstrap.Request.AddParameter("units", "10", ParameterType.GetOrPost);
             var result = await bootstrap.Client
                 .ExecuteAsync<InvestmentLiquidatedDto>(bootstrap.Request)
@@ -73,7 +69,7 @@ namespace SLAApp.Cowrywise.Api.Tests
             Assert.Equal(result.Data.Data.InvestmentId, investmentId);
             Assert.Contains("success", result.Data.Status);
         }
-        
+
         private async Task<AccountActionsTests.BootstrapProps> BootstrapTest(string resource, RestSharp.Method method)
         {
             var config = new AuthenticationConfiguration(
@@ -85,17 +81,14 @@ namespace SLAApp.Cowrywise.Api.Tests
             var auth = new AuthenticationService(new HttpClient(), config);
             await auth.GetApiToken()
                 .ConfigureAwait(false);
-                
+
             var client = new RestClient("https://sandbox.embed.cowrywise.com");
-            client.UseSystemTextJson(new JsonSerializerOptions
-            {
-                PropertyNameCaseInsensitive = true
-            });
+            client.UseDefaultSerializers();
             client.AddDefaultHeaders(new Dictionary<string, string>
             {
                 {"Authorization", $"Bearer {auth.ApiToken.AccessToken}"}
             });
-                
+
             var request = new RestRequest(resource, method);
             return new AccountActionsTests.BootstrapProps { Client = client, Request = request };
         }

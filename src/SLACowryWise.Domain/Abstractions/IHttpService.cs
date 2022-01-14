@@ -1,10 +1,10 @@
-using System.Threading.Tasks;
 using RestSharp;
+using System.Threading.Tasks;
 
 namespace SLACowryWise.Domain.Abstractions
 {
     public interface IHttpService
     {
-        Task<IRestClient> InitializeClient();
+        Task<RestClient> InitializeClient();
     }
 }

@@ -60,7 +60,7 @@ namespace SLACowryWiseApi.Controllers
         [HttpPost("api/savings")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [Produces(typeof(SavingsCreatedResponseDto))]
+        [Produces(typeof(CreateSavingsResponse))]
         public async Task<IActionResult> CreateSavings([FromBody] CreateSavingsInputModel inputModel)
         {
             try

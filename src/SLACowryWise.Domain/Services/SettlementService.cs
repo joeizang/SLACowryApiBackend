@@ -1,6 +1,6 @@
-using System.Threading.Tasks;
 using RestSharp;
 using SLACowryWise.Domain.Abstractions;
+using System.Threading.Tasks;
 
 namespace SLACowryWise.Domain.Services
 {
@@ -14,7 +14,7 @@ namespace SLACowryWise.Domain.Services
         }
         public async Task<SettlementResponseDto> WithdrawToUserBankAccount(SettlementInputModel model)
         {
-            IRestRequest request = new RestRequest("/api/v1/settlements", Method.POST);
+            var request = new RestRequest("/api/v1/settlements", Method.Post);
             request.AddParameter("account_id", model.AccountId, ParameterType.GetOrPost);
             request.AddParameter("amount", model.Amount, ParameterType.GetOrPost);
             request.AddParameter("bank_id", model.BankId, ParameterType.GetOrPost);

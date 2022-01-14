@@ -1,9 +1,7 @@
 using RestSharp;
-using RestSharp.Serializers.SystemTextJson;
 using SLACowryWise.Domain.DTOs.Wallets;
 using System.Collections.Generic;
 using System.Net.Http;
-using System.Text.Json;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -28,10 +26,7 @@ namespace SLAApp.Cowrywise.Api.Tests
                 .ConfigureAwait(false);
 
             var client = new RestClient("https://sandbox.embed.cowrywise.com");
-            client.UseSystemTextJson(new JsonSerializerOptions
-            {
-                PropertyNameCaseInsensitive = true
-            });
+            client.UseDefaultSerializers();
             client.AddDefaultHeaders(new Dictionary<string, string>
             {
                 {"Authorization", $"Bearer {auth.ApiToken.AccessToken}"}
@@ -44,7 +39,7 @@ namespace SLAApp.Cowrywise.Api.Tests
         [Fact]
         public async void CreateWalletForAccount_ReturnsCreateWalletResponseDto()
         {
-            var bootstrap = await BootstrapTest("/api/v1/wallets", Method.POST);
+            var bootstrap = await BootstrapTest("/api/v1/wallets", Method.Post);
             bootstrap.Request.AddParameter("account_id", $"{TestId1}", ParameterType.GetOrPost);
             bootstrap.Request.AddParameter("currency_code", "NGN");
             var result = await bootstrap.Client
@@ -56,7 +51,7 @@ namespace SLAApp.Cowrywise.Api.Tests
         [Fact]
         public async void GetAllWalletsReturnsWalletPaginatedResponseDto()
         {
-            var bootstrap = await BootstrapTest("/api/v1/wallets", Method.GET);
+            var bootstrap = await BootstrapTest("/api/v1/wallets", Method.Get);
             bootstrap.Request.AddParameter("page", "2", ParameterType.GetOrPost);
             bootstrap.Request.AddParameter("page_count", 20, ParameterType.GetOrPost);
             var result = await bootstrap.Client

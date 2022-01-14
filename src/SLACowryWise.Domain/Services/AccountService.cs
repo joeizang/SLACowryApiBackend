@@ -35,7 +35,7 @@ namespace SLACowryWise.Domain.Services
         }
         public async Task<AccountPortfolioResponse> GetPortfolio(string id)
         {
-            IRestRequest request = new RestRequest($"/api/v1/accounts/{id}/portfolio", Method.GET);
+            var request = new RestRequest($"/api/v1/accounts/{id}/portfolio", Method.Get);
             var client = await _service.InitializeClient().ConfigureAwait(false);
             var result = await client.ExecuteAsync<AccountPortfolioResponse>(request)
                 .ConfigureAwait(false);
@@ -44,7 +44,7 @@ namespace SLACowryWise.Domain.Services
 
         public async Task<AccountCreationResponse> UpdateAccountAddress(AddressUpdateInputModel inputModel)
         {
-            IRestRequest request = new RestRequest($"/api/v1/accounts/{inputModel.AccountID}/address", Method.POST);
+            var request = new RestRequest($"/api/v1/accounts/{inputModel.AccountID}/address", Method.Post);
             request.AddParameter("area_code", inputModel.AreaCode, ParameterType.GetOrPost);
             request.AddParameter("lga", inputModel.Lga, ParameterType.GetOrPost);
             request.AddParameter("state", inputModel.State, ParameterType.GetOrPost);
@@ -64,7 +64,7 @@ namespace SLACowryWise.Domain.Services
 
         public async Task<AccountCreationResponse> CreateAccount(CreateAccountInputModel inputModel)
         {
-            IRestRequest request = new RestRequest("/api/v1/accounts", Method.POST);
+            var request = new RestRequest("/api/v1/accounts", Method.Post);
             request.AddHeader("Content-Type", "application/x-www-form-urlencoded");
             request.AddParameter("first_name", inputModel.FirstName, ParameterType.GetOrPost);
             request.AddParameter("last_name", inputModel.LastName, ParameterType.GetOrPost);
@@ -83,7 +83,7 @@ namespace SLACowryWise.Domain.Services
 
         public async Task<AccountCreationResponse> GetSingleAccount(string id)
         {
-            IRestRequest request = new RestRequest($"/api/v1/accounts/{id}", Method.GET);
+            var request = new RestRequest($"/api/v1/accounts/{id}", Method.Get);
             var client = await _service.InitializeClient().ConfigureAwait(false);
             var result = await client
                 .ExecuteAsync<AccountCreationResponse>(request)
@@ -93,7 +93,7 @@ namespace SLACowryWise.Domain.Services
 
         public async Task<AccountCreationResponse> UpdateAccountNextOfKin(AccountNextOfKinInputModel inputModel)
         {
-            IRestRequest request = new RestRequest($"/api/v1/accounts/{inputModel.AccountID}/nok", Method.POST);
+            var request = new RestRequest($"/api/v1/accounts/{inputModel.AccountID}/nok", Method.Post);
             request.AddParameter("email", inputModel.Email, ParameterType.GetOrPost);
             request.AddParameter("last_name", inputModel.LastName, ParameterType.GetOrPost);
             request.AddParameter("first_name", inputModel.FirstName, ParameterType.GetOrPost);
@@ -113,7 +113,7 @@ namespace SLACowryWise.Domain.Services
 
         public async Task<AccountCreationResponse> UpdateAccountProfile(UpdateProfileInputModel inputModel)
         {
-            IRestRequest request = new RestRequest($"/api/v1/accounts/{inputModel.AccountID}/profile", Method.POST);
+            var request = new RestRequest($"/api/v1/accounts/{inputModel.AccountID}/profile", Method.Post);
             request.AddParameter("email", inputModel.Email, ParameterType.GetOrPost);
             request.AddParameter("last_name", inputModel.LastName, ParameterType.GetOrPost);
             request.AddParameter("first_name", inputModel.FirstName, ParameterType.GetOrPost);
@@ -133,7 +133,7 @@ namespace SLACowryWise.Domain.Services
 
         public async Task<AccountIdentityResponse> UpdateAccountOwnerIdentity(UpdateIdentityInputModel inputModel)
         {
-            IRestRequest request = new RestRequest($"/api/v1/accounts/{inputModel.AccountID}/identity", Method.POST);
+            var request = new RestRequest($"/api/v1/accounts/{inputModel.AccountID}/identity", Method.Post);
             request.AddParameter("identity_type", inputModel.IdentityType, ParameterType.GetOrPost);
             request.AddParameter("identity_value", inputModel.IdentityValue, ParameterType.GetOrPost);
             var client = await _service.InitializeClient().ConfigureAwait(false);
@@ -149,7 +149,7 @@ namespace SLACowryWise.Domain.Services
 
         public async Task<AccountBankUpdateResponse> UpdateBankDetails(AddBankInputModel inputModel)
         {
-            IRestRequest request = new RestRequest($"/api/v1/accounts/{inputModel.AccountID}/bank", Method.POST);
+            var request = new RestRequest($"/api/v1/accounts/{inputModel.AccountID}/bank", Method.Post);
             request.AddParameter("bank_code", inputModel.BankCode, ParameterType.GetOrPost);
             request.AddParameter("account_number", inputModel.AccountNumber, ParameterType.GetOrPost);
             var client = await _service.InitializeClient().ConfigureAwait(false);

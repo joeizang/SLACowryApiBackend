@@ -66,15 +66,19 @@ namespace SLACowryWise.Domain.DTOs.Savings
     {
         [JsonPropertyName("account_id")]
         public string AccountId { get; set; }
+
         [JsonPropertyName("currency_code")]
         public string CurrencyCode { get; set; }
+
         [JsonPropertyName("days")]
         public string Days { get; set; }
+
         [JsonPropertyName("interest_enabled")]
         public string InterestEnabled { get; set; }
+
         [JsonPropertyName("customerId")]
-        public string CustmerId { get; set; }
-        [JsonPropertyName("sla_product_type")]
+        public string CustomerId { get; set; }
+
         public int ProductTypeId { get; set; }
     }
 

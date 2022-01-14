@@ -24,7 +24,7 @@ namespace SLACowryWise.Domain.Services
         }
         public async Task<WalletPaginatedDtoRoot> GetAllWallets(GetPaginatedResponseInputModel inputModel)
         {
-            IRestRequest request = new RestRequest("/api/v1/wallets", Method.GET);
+            var request = new RestRequest("/api/v1/wallets", Method.Get);
             request.AddParameter("page", inputModel.Page, ParameterType.GetOrPost);
             request.AddParameter("page_count", inputModel.PageSize, ParameterType.GetOrPost);
             var client = await _service.InitializeClient().ConfigureAwait(false);
@@ -35,7 +35,7 @@ namespace SLACowryWise.Domain.Services
 
         public async Task<CreateWalletResponseDto> CreateWallet(CreateWalletInputModel inputModel)
         {
-            IRestRequest request = new RestRequest("/api/v1/wallets", Method.POST);
+            var request = new RestRequest("/api/v1/wallets", Method.Post);
             request.AddParameter("account_id", inputModel.AccountId, ParameterType.GetOrPost);
             request.AddParameter("currency_code", inputModel.CurrencyCode, ParameterType.GetOrPost);
             var client = await _service.InitializeClient().ConfigureAwait(false);
@@ -53,7 +53,7 @@ namespace SLACowryWise.Domain.Services
 
         public async Task<SingleWalletResponse> GetAWallet(string walletId)
         {
-            IRestRequest request = new RestRequest($"/api/v1/wallets/{walletId}", Method.GET);
+            var request = new RestRequest($"/api/v1/wallets/{walletId}", Method.Get);
             var client = await _service.InitializeClient().ConfigureAwait(false);
             var result = await client.ExecuteAsync<SingleWalletResponse>(request)
                 .ConfigureAwait(false);
@@ -62,7 +62,7 @@ namespace SLACowryWise.Domain.Services
 
         public async Task<WalletTransferDtoRoot> TransferFundsFromWallet(WalletTransferInputModel inputModel)
         {
-            IRestRequest request = new RestRequest($"/api/v1/wallets/{inputModel.AccountId}", Method.POST);
+            var request = new RestRequest($"/api/v1/wallets/{inputModel.AccountId}", Method.Post);
             request.AddParameter("product_code", inputModel.ProductCode, ParameterType.GetOrPost);
             request.AddParameter("amount", inputModel.Amount, ParameterType.GetOrPost);
             var client = await _service.InitializeClient().ConfigureAwait(false);

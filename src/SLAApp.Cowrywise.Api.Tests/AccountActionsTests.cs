@@ -1,12 +1,9 @@
+using RestSharp;
+using SLACowryWise.Domain.DTOs.Accounts;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Text.Json;
 using System.Threading.Tasks;
-using RestSharp;
-using SLACowryWise.Domain.Abstractions;
-using SLACowryWise.Domain.Configuration;
-using SLACowryWise.Domain.DTOs.Accounts;
-using SLACowryWise.Domain.Services;
 using Xunit;
 
 namespace SLAApp.Cowrywise.Api.Tests
@@ -24,7 +21,7 @@ namespace SLAApp.Cowrywise.Api.Tests
                 LastName = "slaorg9",
                 Email = "slatest9@slatester.com"
             };
-            var bootstrap = await BootstrapTest("/api/v1/accounts", Method.POST);
+            var bootstrap = await BootstrapTest("/api/v1/accounts", Method.Post);
             bootstrap.Request.AddHeader("Content-Type", "application/x-www-form-urlencoded");
             bootstrap.Request.AddParameter("first_name", user.FirstName, ParameterType.GetOrPost);
             bootstrap.Request.AddParameter("last_name", user.LastName, ParameterType.GetOrPost);
@@ -34,11 +31,11 @@ namespace SLAApp.Cowrywise.Api.Tests
             Assert.NotNull(response);
             Assert.False(string.IsNullOrEmpty(response.Data.AccountId));
         }
-        
+
         [Fact]
         public async void GetSingleAccount_ReturnsAccountCreationDto()
         {
-            var bootstrap = await BootstrapTest($"/api/v1/accounts/{TestId1}", Method.GET);
+            var bootstrap = await BootstrapTest($"/api/v1/accounts/{TestId1}", Method.Get);
             var result = await bootstrap.Client.ExecuteAsync(bootstrap.Request).ConfigureAwait(false);
             var response = JsonSerializer.Deserialize<AccountCreationResponse>(result.Content);
             Assert.NotNull(response);
@@ -48,10 +45,10 @@ namespace SLAApp.Cowrywise.Api.Tests
         [Fact]
         public async void GetPortfolio_ReturnsAccountPortfolioDto()
         {
-            var bootstrap = await BootstrapTest($"/api/v1/accounts/{TestId}/portfolio", Method.GET).ConfigureAwait(false);
+            var bootstrap = await BootstrapTest($"/api/v1/accounts/{TestId}/portfolio", Method.Get).ConfigureAwait(false);
             var result = await bootstrap.Client.ExecuteAsync(bootstrap.Request).ConfigureAwait(false);
             var response = JsonSerializer.Deserialize<AccountPortfolioResponse>(result.Content);
-            
+
             Assert.NotNull(response);
             Assert.IsType<AccountPortfolioResponse>(response);
         }
@@ -59,7 +56,7 @@ namespace SLAApp.Cowrywise.Api.Tests
         [Fact]
         public async void UpdateAccountAddress_ReturnsAccountCreationDto()
         {
-            var bootstrap = await BootstrapTest($"/api/v1/accounts/{TestId}/address", Method.POST);
+            var bootstrap = await BootstrapTest($"/api/v1/accounts/{TestId}/address", Method.Post);
             var updatedAddress = new AddressUpdateInputModel
             {
                 City = "Jos",
@@ -77,12 +74,12 @@ namespace SLAApp.Cowrywise.Api.Tests
             bootstrap.Request.AddParameter("street", updatedAddress.Street, ParameterType.GetOrPost);
             var result = await bootstrap.Client.ExecuteAsync(bootstrap.Request).ConfigureAwait(false);
             var response = JsonSerializer.Deserialize<AccountCreationResponse>(result.Content);
-            
+
             Assert.NotNull(response);
             Assert.IsType<AccountCreationResponse>(response);
         }
-        
-        
+
+
 
 
         private async Task<BootstrapProps> BootstrapTest(string resource, Method method)
@@ -96,22 +93,22 @@ namespace SLAApp.Cowrywise.Api.Tests
             var auth = new AuthenticationService(new HttpClient(), config);
             await auth.GetApiToken()
                 .ConfigureAwait(false);
-            
+
             var client = new RestClient("https://sandbox.embed.cowrywise.com");
             client.AddDefaultHeaders(new Dictionary<string, string>
             {
                 {"Authorization", $"Bearer {auth.ApiToken.AccessToken}"}
             });
-            
+
             var request = new RestRequest(resource, method);
             return new BootstrapProps { Client = client, Request = request };
         }
 
         public class BootstrapProps
         {
-            public IRestClient Client { get; set; }
+            public RestClient Client { get; set; }
 
-            public IRestRequest Request { get; set; }
+            public RestRequest Request { get; set; }
         }
     }
 }

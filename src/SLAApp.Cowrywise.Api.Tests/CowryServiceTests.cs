@@ -1,5 +1,4 @@
 ﻿using RestSharp;
-using RestSharp.Serializers.SystemTextJson;
 using SLACowryWise.Domain;
 using SLACowryWise.Domain.Abstractions;
 using SLACowryWise.Domain.Data;
@@ -7,7 +6,6 @@ using SLACowryWise.Domain.DTOs;
 using SLACowryWise.Domain.Services;
 using System.Collections.Generic;
 using System.Net.Http;
-using System.Text.Json;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -19,7 +17,7 @@ namespace SLAApp.Cowrywise.Api.Tests
         [Fact]
         public async void GetBanksWithReturnsBankResponse()
         {
-            var bootstrap = await BootstrapTest("api/v1/misc/banks", Method.GET).ConfigureAwait(false);
+            var bootstrap = await BootstrapTest("api/v1/misc/banks", Method.Get).ConfigureAwait(false);
             var input = new GetPaginatedResponseInputModel
             {
                 Page = "1",
@@ -59,10 +57,7 @@ namespace SLAApp.Cowrywise.Api.Tests
                 .ConfigureAwait(false);
 
             var client = new RestClient("https://sandbox.embed.cowrywise.com");
-            client.UseSystemTextJson(new JsonSerializerOptions
-            {
-                PropertyNameCaseInsensitive = true
-            });
+            client.UseDefaultSerializers();
             client.AddDefaultHeaders(new Dictionary<string, string>
             {
                 {"Authorization", $"Bearer {auth.ApiToken.AccessToken}"}

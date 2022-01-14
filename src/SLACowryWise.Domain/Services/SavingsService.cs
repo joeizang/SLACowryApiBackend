@@ -24,7 +24,7 @@ namespace SLACowryWise.Domain.Services
         }
         public async Task<SavingsPaginatedResponseDto> GetAllSavings()
         {
-            IRestRequest request = new RestRequest("/api/v1/savings", Method.GET);
+            var request = new RestRequest("/api/v1/savings", Method.Get);
             var client = await _service.InitializeClient().ConfigureAwait(false);
             var result = await client.ExecuteAsync<SavingsPaginatedResponseDto>(request)
                 .ConfigureAwait(false);
@@ -33,7 +33,7 @@ namespace SLACowryWise.Domain.Services
 
         public async Task<SavingsCreatedResponse> CreateSavings(CreateSavingsInputModel inputModel)
         {
-            IRestRequest request = new RestRequest("/api/v1/savings", Method.POST);
+            var request = new RestRequest("/api/v1/savings", Method.Post);
             request.AddParameter("account_id", inputModel.AccountId, ParameterType.GetOrPost);
             request.AddParameter("currency_code", inputModel.CurrencyCode, ParameterType.GetOrPost);
             request.AddParameter("days", inputModel.Days, ParameterType.GetOrPost);
@@ -45,7 +45,7 @@ namespace SLACowryWise.Domain.Services
             {
                 CreateSavingsResponse = result.Data,
                 AccountId = inputModel.AccountId,
-                CustomerId = inputModel.CustmerId,
+                CustomerId = inputModel.CustomerId,
                 ProductType = inputModel.ProductTypeId.ToString(),
             };
             await _createSavings.CreateOneAsync(created).ConfigureAwait(false);
@@ -54,7 +54,7 @@ namespace SLACowryWise.Domain.Services
 
         public async Task<SingleSavingsByIdResponseDto> GetSingleSavings(string savingsId)
         {
-            IRestRequest request = new RestRequest($"/api/v1/savings/{savingsId}", Method.GET);
+            var request = new RestRequest($"/api/v1/savings/{savingsId}", Method.Get);
             var client = await _service.InitializeClient().ConfigureAwait(false);
             var result = await client.ExecuteAsync<SingleSavingsByIdResponseDto>(request).ConfigureAwait(
                 false);
@@ -63,7 +63,7 @@ namespace SLACowryWise.Domain.Services
 
         public async Task<FundSavingsDtoResponse> FundSavingsFromWallet(WalletTransferInputModel inputModel)
         {
-            var request = new RestRequest($"/api/v1/wallets/{inputModel.AccountId}/transfer", Method.POST);
+            var request = new RestRequest($"/api/v1/wallets/{inputModel.AccountId}/transfer", Method.Post);
             request.AddParameter("product_code", inputModel.ProductCode, ParameterType.GetOrPost);
             request.AddParameter("amount", inputModel.Amount, ParameterType.GetOrPost);
             var client = await _service.InitializeClient().ConfigureAwait(false);
@@ -82,7 +82,7 @@ namespace SLACowryWise.Domain.Services
 
         public async Task<SavingsRateDtoResponse> GetSavingsRate(string days)
         {
-            var request = new RestRequest($"/api/v1/savings/rates", Method.POST);
+            var request = new RestRequest($"/api/v1/savings/rates", Method.Post);
             request.AddParameter("days", days, ParameterType.GetOrPost);
             var client = await _service.InitializeClient().ConfigureAwait(false);
             var result = await client.ExecuteAsync<SavingsRateDtoResponse>(request)
@@ -92,7 +92,7 @@ namespace SLACowryWise.Domain.Services
 
         public async Task<WithdrawFromSavingsDto> WithdrawFromSavings(WithdrawFromSavingsInputModel inputModel)
         {
-            var request = new RestRequest($"/api/v1/savings/{inputModel.SavingsId}/withdraw", Method.POST);
+            var request = new RestRequest($"/api/v1/savings/{inputModel.SavingsId}/withdraw", Method.Post);
             request.AddParameter("amount", inputModel.Amount, ParameterType.GetOrPost);
             request.AddParameter("product_code", inputModel.ProductCode, ParameterType.GetOrPost);
             var client = await _service.InitializeClient().ConfigureAwait(false);

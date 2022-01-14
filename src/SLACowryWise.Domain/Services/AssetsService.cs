@@ -22,13 +22,12 @@ namespace SLACowryWise.Domain.Services
         }
         public async Task<AssetsPaginatedResponse> GetAllAssets(AssetsPaginatedResponseInput inputModel)
         {
-            IRestRequest request;
             //var page = inputModel.Page is not null ? int.Parse(inputModel.Page) : 0;
 
             //if(page > 1)
             //    request = new RestRequest($"/api/v1/assets?page={page}", Method.GET);
             //else
-            request = new RestRequest($"/api/v1/assets", Method.GET);
+            var request = new RestRequest($"/api/v1/assets", Method.Get);
             if (inputModel is not null && string.IsNullOrEmpty(inputModel.Page) && string.IsNullOrEmpty(inputModel.PageSize)
                 && string.IsNullOrEmpty(inputModel.Country) && string.IsNullOrEmpty(inputModel.AssetType))
             {
@@ -50,7 +49,7 @@ namespace SLACowryWise.Domain.Services
 
         public async Task<SingleAssetRoot> GetSingleAsset(string id)
         {
-            IRestRequest request = new RestRequest($"/api/v1/assets{id}", Method.GET);
+            var request = new RestRequest($"/api/v1/assets{id}", Method.Get);
             var client = await _assetService.InitializeClient().ConfigureAwait(false);
             var result = await client.ExecuteAsync<SingleAssetRoot>(request).ConfigureAwait(false);
             return result.Data;

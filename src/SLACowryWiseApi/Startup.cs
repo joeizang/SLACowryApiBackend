@@ -6,7 +6,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
-using RestSharp;
 using SLACowryWise.Domain;
 using SLACowryWise.Domain.Abstractions;
 using SLACowryWise.Domain.Configuration;
@@ -15,6 +14,8 @@ using SLACowryWise.Domain.DomainModels;
 using SLACowryWise.Domain.Extensions;
 using SLACowryWise.Domain.Services;
 using SLACowryWise.Domain.WebHookUtilities;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace SLACowryWiseApi
 {
@@ -43,7 +44,7 @@ namespace SLACowryWiseApi
             services.Configure<AuthenticationConfiguration>(Configuration.GetSection("CowryWiseSettings"));
             services.AddHttpClient();
             services.AddHttpClient<IAuthenticationService, AuthenticationService>();
-            services.AddTransient<IRestClient>(opt => new RestClient("https://sandbox.embed.cowrywise.com"));
+            //services.AddTransient(opt => new RestClient("https://sandbox.embed.cowrywise.com"));
             services.AddTransient<IHttpService, HttpService>();
             services.AddAccountServiceTypes();
             services.AddInvestmentTypesService();
@@ -58,7 +59,11 @@ namespace SLACowryWiseApi
             services.AddTransient<IIndex, IndexService>();
             services.AddTransient<ITradeStockService, TradeStockService>();
             services.AddScoped<ISignatureGenerator, SignatureGenerator>();
-            services.AddControllers();
+            services.AddControllers().AddJsonOptions(opt =>
+            {
+                opt.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+                opt.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
+            });
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "SLACowryWiseApi", Version = "v1" });

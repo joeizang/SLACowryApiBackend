@@ -30,9 +30,9 @@ namespace SLACowryWise.Domain.Services
 
         }
 
-        private async Task<IRestResponse<BankResponse>> FetchBanksFromCowry(GetPaginatedResponseInputModel inputModel)
+        private async Task<RestResponse<BankResponse>> FetchBanksFromCowry(GetPaginatedResponseInputModel inputModel)
         {
-            var request = new RestRequest("/api/v1/investments", Method.POST);
+            var request = new RestRequest("/api/v1/investments", Method.Post);
             request.AddParameter("page", inputModel.Page, ParameterType.GetOrPost);
             request.AddParameter("page_size", inputModel.PageSize, ParameterType.GetOrPost);
             var client = await _service.InitializeClient().ConfigureAwait(false);

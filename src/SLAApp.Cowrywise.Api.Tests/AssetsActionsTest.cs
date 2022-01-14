@@ -1,10 +1,8 @@
+using RestSharp;
+using SLACowryWise.Domain.DTOs.Assets;
 using System.Collections.Generic;
 using System.Net.Http;
-using System.Text.Json;
 using System.Threading.Tasks;
-using RestSharp;
-using RestSharp.Serializers.SystemTextJson;
-using SLACowryWise.Domain.DTOs.Assets;
 using Xunit;
 
 namespace SLAApp.Cowrywise.Api.Tests
@@ -16,7 +14,7 @@ namespace SLAApp.Cowrywise.Api.Tests
         [Fact]
         public async void GetAllAssets_ReturnsAssetsPaginatedResponseDto()
         {
-            var bootstrap = await BootstrapTest("/api/v1/assets", Method.GET);
+            var bootstrap = await BootstrapTest("/api/v1/assets", Method.Get);
             var result = await bootstrap.Client
                 .ExecuteAsync<AssetsPaginatedResponse>(bootstrap.Request)
                 .ConfigureAwait(false);
@@ -27,14 +25,14 @@ namespace SLAApp.Cowrywise.Api.Tests
         [Fact]
         public async void GetSingleAssetById_ReturnsSingleAssetsResponse()
         {
-            var bootstrap = await BootstrapTest($"/api/v1/assets/{AssetId}", Method.GET);
+            var bootstrap = await BootstrapTest($"/api/v1/assets/{AssetId}", Method.Get);
             var result = await bootstrap.Client.ExecuteAsync<SingleAssetRoot>(bootstrap.Request).ConfigureAwait(false);
             Assert.NotNull(result.Data);
             Assert.Contains("NGN", result.Data.Data.Currency);
             Assert.False(string.IsNullOrEmpty(result.Data.Data.AssetId));
             Assert.Contains("success", result.Data.Status);
         }
-        
+
         private async Task<AccountActionsTests.BootstrapProps> BootstrapTest(string resource, RestSharp.Method method)
         {
             var config = new AuthenticationConfiguration(
@@ -46,17 +44,14 @@ namespace SLAApp.Cowrywise.Api.Tests
             var auth = new AuthenticationService(new HttpClient(), config);
             await auth.GetApiToken()
                 .ConfigureAwait(false);
-                
+
             var client = new RestClient("https://sandbox.embed.cowrywise.com");
-            client.UseSystemTextJson(new JsonSerializerOptions
-            {
-                PropertyNameCaseInsensitive = true
-            });
+            client.UseDefaultSerializers();
             client.AddDefaultHeaders(new Dictionary<string, string>
             {
                 {"Authorization", $"Bearer {auth.ApiToken.AccessToken}"}
             });
-                
+
             var request = new RestRequest(resource, method);
             return new AccountActionsTests.BootstrapProps { Client = client, Request = request };
         }

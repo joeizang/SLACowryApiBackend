@@ -1,3 +1,4 @@
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using SLACowryWise.Domain.Abstractions;
 using SLACowryWise.Domain.Configuration;
@@ -14,11 +15,14 @@ namespace SLACowryWise.Domain.Services
     {
         private readonly HttpClient _http;
         private readonly AuthenticationConfiguration _config;
+        private readonly ILogger<IAuthenticationService> _logger;
 
-        public AuthenticationService(IHttpClientFactory httpClient, IOptions<AuthenticationConfiguration> config)
+        public AuthenticationService(IHttpClientFactory httpClient, IOptions<AuthenticationConfiguration> config,
+            ILogger<IAuthenticationService> logger)
         {
             _http = httpClient.CreateClient();
             _config = config.Value;
+            _logger = logger;
         }
 
         //public AuthenticationService(HttpClient httpClient, IOptions<AuthenticationConfiguration> config)

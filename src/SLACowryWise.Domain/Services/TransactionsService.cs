@@ -15,7 +15,7 @@ namespace SLACowryWise.Domain.Services
         }
         public async Task<GetDepositResponse> GetSingleDeposit(string id)
         {
-            IRestRequest request = new RestRequest($"/api/v1/deposits/{id}", Method.GET);
+            var request = new RestRequest($"/api/v1/deposits/{id}", Method.Get);
             var client = await _service.InitializeClient().ConfigureAwait(false);
             var result = await client.ExecuteAsync<GetDepositResponse>(request)
                 .ConfigureAwait(false);
@@ -24,7 +24,7 @@ namespace SLACowryWise.Domain.Services
 
         public async Task<GetWithdrawalResponse> GetSingleWithdrawal(string id)
         {
-            IRestRequest request = new RestRequest($"/api/v1/withdrawals/{id}", Method.GET);
+            var request = new RestRequest($"/api/v1/withdrawals/{id}", Method.Get);
             var client = await _service.InitializeClient().ConfigureAwait(false);
             var result = await client.ExecuteAsync<GetWithdrawalResponse>(request)
                 .ConfigureAwait(false);
@@ -33,7 +33,7 @@ namespace SLACowryWise.Domain.Services
 
         public async Task<SingleTransferResponse> GetSingleTransfer(string id)
         {
-            IRestRequest request = new RestRequest($"/api/v1/transfers/{id}", Method.GET);
+            var request = new RestRequest($"/api/v1/transfers/{id}", Method.Get);
             var client = await _service.InitializeClient().ConfigureAwait(false);
             var result = await client.ExecuteAsync<SingleTransferResponse>(request)
                 .ConfigureAwait(false);
@@ -42,7 +42,7 @@ namespace SLACowryWise.Domain.Services
 
         public async Task<GetTransactionsPaginatedResponse> GetAllTransfers(GetAllTransfersInputModel inputModel)
         {
-            IRestRequest request = new RestRequest("/api/v1/settlements", Method.GET);
+            var request = new RestRequest("/api/v1/settlements", Method.Get);
             request.AddParameter("account_id", inputModel.AccountId, ParameterType.GetOrPost);
             request.AddParameter("transfer_type", inputModel.TransferType, ParameterType.GetOrPost);
             request.AddParameter("from_date", inputModel.FromDate, ParameterType.GetOrPost);
@@ -63,7 +63,7 @@ namespace SLACowryWise.Domain.Services
 
         public async Task<GetDepositsPaginatedResponse> GetAllDeposits(GetPaginatedResponseInputModel inputModel)
         {
-            IRestRequest request = new RestRequest("/api/v1/deposits", Method.GET);
+            var request = new RestRequest("/api/v1/deposits", Method.Get);
             request.AddParameter("page", inputModel.Page, ParameterType.GetOrPost);
             request.AddParameter("page_size", inputModel.PageSize, ParameterType.GetOrPost);
 
@@ -75,7 +75,7 @@ namespace SLACowryWise.Domain.Services
 
         public async Task<GetAllWithdrawalsPaginatedResponse> GetAllWithdrawals(GetPaginatedResponseInputModel inputModel)
         {
-            IRestRequest request = new RestRequest("/api/v1/withdrawals", Method.GET);
+            var request = new RestRequest("/api/v1/withdrawals", Method.Get);
             request.AddParameter("page", inputModel.Page, ParameterType.GetOrPost);
             request.AddParameter("page_size", inputModel.PageSize, ParameterType.GetOrPost);
 

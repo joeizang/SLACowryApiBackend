@@ -1,48 +1,38 @@
-using System.Collections.Generic;
-using System.Text.Json;
-using System.Threading.Tasks;
 using RestSharp;
-using RestSharp.Serializers.SystemTextJson;
 using SLACowryWise.Domain.Abstractions;
-using SLACowryWise.Domain.Configuration;
-using SLACowryWise.Domain.Services;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace SLACowryWise.Domain
 {
     public class HttpService : IHttpService
     {
-        public HttpService(IAuthenticationService service, IRestClient client)
+        public HttpService(IAuthenticationService service)
         {
             _auth = service;
-            _client = client;
+            _client = new RestClient("https://sandbox.embed.cowrywise.com");
         }
 
         private readonly IAuthenticationService _auth;
 
-        private readonly IRestClient _client;
+        private readonly RestClient _client;
 
-        public async Task<IRestClient> InitializeClient()
+        public async Task<RestClient> InitializeClient()
         {
             await _auth.GetApiToken()
                 .ConfigureAwait(false);
             if (!string.IsNullOrEmpty(_auth.ApiToken.AccessToken))
             {
-                _client.UseSystemTextJson(new JsonSerializerOptions
-                {
-                    PropertyNameCaseInsensitive = true
-                });
+                _client.UseDefaultSerializers();
                 _client.AddDefaultHeaders(new Dictionary<string, string>
                 {
                     {"Authorization", $"Bearer {_auth.ApiToken.AccessToken}"}
-                }); 
+                });
                 return _client;
             }
 
             await _auth.RefreshToken().ConfigureAwait(false);
-            _client.UseSystemTextJson(new JsonSerializerOptions
-            {
-                PropertyNameCaseInsensitive = true
-            });
+            _client.UseDefaultSerializers();
             _client.AddDefaultHeaders(new Dictionary<string, string>
             {
                 {"Authorization", $"Bearer {_auth.ApiToken.AccessToken}"}

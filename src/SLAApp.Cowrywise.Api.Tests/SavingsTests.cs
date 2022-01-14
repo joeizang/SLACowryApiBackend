@@ -1,12 +1,8 @@
+using RestSharp;
+using SLACowryWise.Domain.DTOs.Savings;
 using System.Collections.Generic;
 using System.Net.Http;
-using System.Text.Json;
 using System.Threading.Tasks;
-using RestSharp;
-using RestSharp.Serializers.SystemTextJson;
-using SLACowryWise.Domain.Configuration;
-using SLACowryWise.Domain.DTOs.Savings;
-using SLACowryWise.Domain.Services;
 using Xunit;
 
 namespace SLAApp.Cowrywise.Api.Tests
@@ -29,24 +25,21 @@ namespace SLAApp.Cowrywise.Api.Tests
             var auth = new AuthenticationService(new HttpClient(), config);
             await auth.GetApiToken()
                 .ConfigureAwait(false);
-                
+
             var client = new RestClient("https://sandbox.embed.cowrywise.com");
-            client.UseSystemTextJson(new JsonSerializerOptions
-            {
-                PropertyNameCaseInsensitive = true
-            });
+            client.UseDefaultSerializers();
             client.AddDefaultHeaders(new Dictionary<string, string>
             {
                 {"Authorization", $"Bearer {auth.ApiToken.AccessToken}"}
             });
-                
+
             var request = new RestRequest(resource, method);
             return new AccountActionsTests.BootstrapProps { Client = client, Request = request };
         }
         [Fact]
         public async void GetAllSavingsByCustomer_ReturnsSavingsPaginatedResponseDto()
         {
-            var bootstrap = await BootstrapTest("/api/v1/savings", Method.GET);
+            var bootstrap = await BootstrapTest("/api/v1/savings", Method.Get);
             var result = await bootstrap.Client
                 .ExecuteAsync<SavingsPaginatedResponseDto>(bootstrap.Request)
                 .ConfigureAwait(false);
@@ -57,7 +50,7 @@ namespace SLAApp.Cowrywise.Api.Tests
         [Fact]
         public async void CreateSavings_ReturnsCreateSavingsPayload()
         {
-            var bootstrap = await BootstrapTest("/api/v1/savings", Method.POST);
+            var bootstrap = await BootstrapTest("/api/v1/savings", Method.Post);
             bootstrap.Request.AddParameter("account_id", $"{id}");
             bootstrap.Request.AddParameter("currency_code", "NGN");
             bootstrap.Request.AddParameter("days", "154");
@@ -73,7 +66,7 @@ namespace SLAApp.Cowrywise.Api.Tests
         [Fact]
         public async void GetSingleSavingsByID_ReturnsSingleSavingsByIDResponseDto()
         {
-            var bootstrap = await BootstrapTest($"/api/v1/savings/{savingsId}", Method.GET);
+            var bootstrap = await BootstrapTest($"/api/v1/savings/{savingsId}", Method.Get);
             var result = await bootstrap.Client
                 .ExecuteAsync<SingleSavingsByIdResponseDto>(bootstrap.Request)
                 .ConfigureAwait(false);

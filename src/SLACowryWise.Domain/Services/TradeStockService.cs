@@ -1,8 +1,7 @@
-using System.Threading.Tasks;
 using RestSharp;
 using SLACowryWise.Domain.Abstractions;
 using SLACowryWise.Domain.DTOs.Stocks;
-using SLACowryWise.Domain.DTOs.Transactions;
+using System.Threading.Tasks;
 
 namespace SLACowryWise.Domain.Services
 {
@@ -16,7 +15,7 @@ namespace SLACowryWise.Domain.Services
         }
         public async Task<object> GetStockOrders(string account_id, string status)
         {
-            IRestRequest request = new RestRequest($"/api/v1/orders", Method.POST);
+            var request = new RestRequest($"/api/v1/orders", Method.Post);
             request.AddParameter("account_id", account_id, ParameterType.GetOrPost);
             request.AddParameter("status", status, ParameterType.GetOrPost);
             var client = await _service.InitializeClient().ConfigureAwait(false);
@@ -27,7 +26,7 @@ namespace SLACowryWise.Domain.Services
 
         public async Task<StockAssetsResponse> GetStocks()
         {
-            IRestRequest request = new RestRequest($"/api/v1/stocks/assets", Method.GET);
+            var request = new RestRequest($"/api/v1/stocks/assets", Method.Get);
             var client = await _service.InitializeClient().ConfigureAwait(false);
             var result = await client.ExecuteAsync<StockAssetsResponse>(request)
                 .ConfigureAwait(false);
@@ -36,7 +35,7 @@ namespace SLACowryWise.Domain.Services
 
         public async Task<object> BuyStock(BuyStockInputModel inputModel)
         {
-            IRestRequest request = new RestRequest($"/api/v1/stocks/buy", Method.POST);
+            var request = new RestRequest($"/api/v1/stocks/buy", Method.Post);
             request.AddParameter("symbol", inputModel.Symbol, ParameterType.GetOrPost);
             request.AddParameter("amount", inputModel.Amount, ParameterType.GetOrPost);
             request.AddParameter("side", inputModel.Side, ParameterType.GetOrPost);
@@ -51,7 +50,7 @@ namespace SLACowryWise.Domain.Services
 
         public async Task<object> SellStock(SellStockInputModel inputModel)
         {
-            IRestRequest request = new RestRequest($"/api/v1/stocks/sell", Method.POST);
+            var request = new RestRequest($"/api/v1/stocks/sell", Method.Post);
             request.AddParameter("symbol", inputModel.Symbol, ParameterType.GetOrPost);
             request.AddParameter("amount", inputModel.Amount, ParameterType.GetOrPost);
             request.AddParameter("side", inputModel.Side, ParameterType.GetOrPost);
@@ -66,7 +65,7 @@ namespace SLACowryWise.Domain.Services
 
         public async Task<UserStockProfileResponse> GetUserStockProfile(string accountId)
         {
-            IRestRequest request = new RestRequest($"/api/v1/stocks/profile", Method.GET);
+            var request = new RestRequest($"/api/v1/stocks/profile", Method.Get);
             request.AddParameter("account_id", accountId, ParameterType.GetOrPost);
             var client = await _service.InitializeClient().ConfigureAwait(false);
             var result = await client.ExecuteAsync<UserStockProfileResponse>(request)
@@ -76,7 +75,7 @@ namespace SLACowryWise.Domain.Services
 
         public async Task<object> GetStockPositions(string accountId)
         {
-            IRestRequest request = new RestRequest($"/api/v1/stocks/positions", Method.GET);
+            var request = new RestRequest($"/api/v1/stocks/positions", Method.Get);
             request.AddParameter("account_id", accountId, ParameterType.GetOrPost);
             var client = await _service.InitializeClient().ConfigureAwait(false);
             var result = await client.ExecuteAsync<object>(request)
@@ -86,7 +85,7 @@ namespace SLACowryWise.Domain.Services
 
         public async Task<object> GetSingleStockPosition(string accountId)
         {
-            IRestRequest request = new RestRequest($"/api/v1/stocks/positions/GFI", Method.GET);
+            var request = new RestRequest($"/api/v1/stocks/positions/GFI", Method.Get);
             request.AddParameter("account_id", accountId, ParameterType.GetOrPost);
             var client = await _service.InitializeClient().ConfigureAwait(false);
             var result = await client.ExecuteAsync<object>(request)
@@ -96,7 +95,7 @@ namespace SLACowryWise.Domain.Services
 
         public async Task<object> CloseStockPositions(string accountId)
         {
-            IRestRequest request = new RestRequest($"/api/v1/stocks/GFI/positions", Method.GET);
+            var request = new RestRequest($"/api/v1/stocks/GFI/positions", Method.Get);
             request.AddParameter("account_id", accountId, ParameterType.GetOrPost);
             var client = await _service.InitializeClient().ConfigureAwait(false);
             var result = await client.ExecuteAsync<object>(request)

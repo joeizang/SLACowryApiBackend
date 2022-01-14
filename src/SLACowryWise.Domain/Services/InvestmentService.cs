@@ -28,7 +28,7 @@ namespace SLACowryWise.Domain.Services
 
         public async Task<SingleInvestmentResponseDto> CreateInvestment(CreateInvestmentInputModel inputModel)
         {
-            var request = new RestRequest("/api/v1/investments", Method.POST);
+            var request = new RestRequest("/api/v1/investments", Method.Post);
             request.AddParameter("account_id", inputModel.AccountId, ParameterType.GetOrPost);
             request.AddParameter("asset_code", inputModel.AssetCode, ParameterType.GetOrPost);
             var client = await _service.InitializeClient().ConfigureAwait(false);
@@ -47,7 +47,7 @@ namespace SLACowryWise.Domain.Services
 
         public async Task<InvestmentPaginatedDtoResponse> GetAllInvestments(InvestmentPaginatedResponseInput inputModel)
         {
-            var request = new RestRequest("/api/v1/investments", Method.GET);
+            var request = new RestRequest("/api/v1/investments", Method.Get);
             if (inputModel is not null && string.IsNullOrEmpty(inputModel.Page) && string.IsNullOrEmpty(inputModel.PageSize)
                 && string.IsNullOrEmpty(inputModel.AssetType))
             {
@@ -69,7 +69,7 @@ namespace SLACowryWise.Domain.Services
 
         public async Task<TransferFromWalletResponseDto> FundInvestment(WalletTransferInputModel inputModel)
         {
-            var request = new RestRequest($"/api/v1/investments/{inputModel.AccountId}/transfer", Method.POST);
+            var request = new RestRequest($"/api/v1/investments/{inputModel.AccountId}/transfer", Method.Post);
             request.AddParameter("product_code", inputModel.ProductCode, ParameterType.GetOrPost);
             request.AddParameter("amount", inputModel.Amount, ParameterType.GetOrPost);
             var client = await _service.InitializeClient().ConfigureAwait(false);
@@ -88,7 +88,7 @@ namespace SLACowryWise.Domain.Services
 
         public async Task<InvestmentLiquidatedDto> LiquidateInvestment(string units, string investmentId, string accountId, string customerId)
         {
-            var request = new RestRequest($"/api/v1/investments/{investmentId}/liquidate", Method.POST);
+            var request = new RestRequest($"/api/v1/investments/{investmentId}/liquidate", Method.Post);
             request.AddParameter("units", units, ParameterType.GetOrPost);
             var client = await _service.InitializeClient().ConfigureAwait(false);
             var result = await client
@@ -106,7 +106,7 @@ namespace SLACowryWise.Domain.Services
 
         public async Task<SingleInvestmentResponseDto> GetSingleInvestment(string investmentId)
         {
-            var request = new RestRequest($"/api/v1/investments/{investmentId}", Method.GET);
+            var request = new RestRequest($"/api/v1/investments/{investmentId}", Method.Post);
             var client = await _service.InitializeClient().ConfigureAwait(false);
             var result = await client
                 .ExecuteAsync<SingleInvestmentResponseDto>(request)
