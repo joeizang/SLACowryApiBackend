@@ -63,7 +63,7 @@ namespace SLACowryWise.Domain.Services
 
         public async Task<FundSavingsDtoResponse> FundSavingsFromWallet(WalletTransferInputModel inputModel)
         {
-            var request = new RestRequest($"/api/v1/wallets/{inputModel.AccountId}/transfer", Method.Post);
+            var request = new RestRequest($"/api/v1/wallets/{inputModel.WalletId}/transfer", Method.Post);
             request.AddParameter("product_code", inputModel.ProductCode, ParameterType.GetOrPost);
             request.AddParameter("amount", inputModel.Amount, ParameterType.GetOrPost);
             var client = await _service.InitializeClient().ConfigureAwait(false);

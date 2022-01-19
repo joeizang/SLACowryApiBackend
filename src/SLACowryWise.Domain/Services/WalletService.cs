@@ -62,7 +62,7 @@ namespace SLACowryWise.Domain.Services
 
         public async Task<WalletTransferDtoRoot> TransferFundsFromWallet(WalletTransferInputModel inputModel)
         {
-            var request = new RestRequest($"/api/v1/wallets/{inputModel.AccountId}", Method.Post);
+            var request = new RestRequest($"/api/v1/wallets/{inputModel.WalletId}/transfer", Method.Post);
             request.AddParameter("product_code", inputModel.ProductCode, ParameterType.GetOrPost);
             request.AddParameter("amount", inputModel.Amount, ParameterType.GetOrPost);
             var client = await _service.InitializeClient().ConfigureAwait(false);
@@ -86,7 +86,7 @@ namespace SLACowryWise.Domain.Services
             WalletPaginatedDtoRoot subsequents;
             List<string> final = new();
             if (firstTrip is null)
-                throw new System.Exception("Cowry has no wallets so something ain't right with them!");
+                throw new Exception("Cowry has no wallets so something ain't right with them!");
             FilterAndAct(firstTrip.Data, final, accountId);
             var ticker = firstTrip.Pagination.TotalPages;
             for (int i = 1; i < ticker; i++)
