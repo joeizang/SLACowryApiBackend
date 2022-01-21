@@ -1,5 +1,7 @@
 using RestSharp;
 using SLACowryWise.Domain.Abstractions;
+using SLACowryWise.Domain.Data;
+using SLACowryWise.Domain.DomainModels;
 using System.Threading.Tasks;
 
 namespace SLACowryWise.Domain.Services
@@ -7,10 +9,12 @@ namespace SLACowryWise.Domain.Services
     public class SettlementService : ISettlementService
     {
         private readonly IHttpService _service;
+        private readonly IWithdrawToUserBank _withdrawalService;
 
-        public SettlementService(IHttpService service)
+        public SettlementService(IHttpService service, IWithdrawToUserBank withdrawalService)
         {
             _service = service;
+            _withdrawalService = withdrawalService;
         }
         public async Task<SettlementResponseDto> WithdrawToUserBankAccount(SettlementInputModel model)
         {
@@ -23,7 +27,20 @@ namespace SLACowryWise.Domain.Services
             var client = await _service.InitializeClient().ConfigureAwait(false);
             var result = await client.ExecuteAsync<SettlementResponseDto>(request)
                 .ConfigureAwait(false);
+            var withdrawal = new WithdrawToUserBank
+            {
+                WithdrawalResponse = result,
+                Request = model
+            };
+            await _withdrawalService.CreateOneAsync(withdrawal).ConfigureAwait(false);
             return result.Data;
+        }
+    }
+
+    public class WithdrawToUserBankService : MongodbPersistenceService<WithdrawToUserBank>, IWithdrawToUserBank
+    {
+        public WithdrawToUserBankService(IMongoDatabaseSettings settings) : base(settings)
+        {
         }
     }
 }

@@ -1,46 +1,35 @@
+using RestSharp;
 using SLACowryWise.Domain.Abstractions;
 using SLACowryWise.Domain.DTOs.Savings;
+using SLACowryWise.Domain.DTOs.Wallets;
 using SLACowryWise.Domain.Services;
 
 namespace SLACowryWise.Domain.DomainModels
 {
     public class SingleSaving : BaseDomainModel
     {
-        public SingleSavingsResponse SingleSavingsResponse { get; set; }
+        public RestResponse<SingleSavingsResponse> SingleSavingsResponse { get; set; }
     }
 
     [BsonCollection("SavingsCreated")]
     public class CreateSavings : BaseDomainModel
     {
-        public SavingsCreatedResponse CreateSavingsResponse { get; set; }
-        public string AccountId { get; set; }
+        public RestResponse<SavingsCreatedResponse> CreateSavingsResponse { get; set; }
 
-        public string CustomerId { get; set; }
-
-        public string ProductType { get; set; }
+        public CreateSavingsInputModel Response { get; set; }
     }
 
     [BsonCollection("SavingsFunded")]
     public class FundSavings : BaseDomainModel
     {
-        public FundSavingsDtoResponse FundSavingsDtoResponse { get; set; }
-
-        public string AccountId { get; set; }
-
-        public string CustomerId { get; set; }
-
-        public string ProductType { get; set; }
+        public RestResponse<FundSavingsDtoResponse> FundSavingsDtoResponse { get; set; }
+        public WalletTransferInputModel Request { get; internal set; }
     }
 
     [BsonCollection("SavingsWithdrawn")]
     public class WithdrawSavings : BaseDomainModel
     {
-        public WithdrawFromSavingsDto WithdrawFromSavingsDto { get; set; }
-
-        public string AccountId { get; set; }
-
-        public string CustomerId { get; set; }
-
-        public string ProductType { get; set; }
+        public RestResponse WithdrawFromSavingsDto { get; set; }
+        public WithdrawFromSavingsInputModel Request { get; internal set; }
     }
 }

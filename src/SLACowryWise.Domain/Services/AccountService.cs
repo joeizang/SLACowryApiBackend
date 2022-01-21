@@ -56,7 +56,8 @@ namespace SLACowryWise.Domain.Services
                 .ConfigureAwait(false);
             var addyUpdates = new AccountAddressUpdates
             {
-                AddressUpdate = result.Data
+                AddressUpdate = result,
+                Request = inputModel
             };
             await _addressUpdates.CreateOneAsync(addyUpdates).ConfigureAwait(false);
             return result.Data;
@@ -75,7 +76,8 @@ namespace SLACowryWise.Domain.Services
 
             var acctCreated = new AccountCreated
             {
-                AccountCreationDto = result.Data
+                AccountCreationDto = result,
+                Request = inputModel
             };
             await _mongo.CreateOneAsync(acctCreated).ConfigureAwait(false);
             return result.Data;
@@ -105,7 +107,8 @@ namespace SLACowryWise.Domain.Services
                 .ConfigureAwait(false);
             var nextOfKin = new AccountNextOfKinUpdate
             {
-                UpdateNextOfKin = result.Data
+                UpdateNextOfKin = result,
+                Request = inputModel
             };
             await _nextOfKin.CreateOneAsync(nextOfKin).ConfigureAwait(false);
             return result.Data;
@@ -125,7 +128,8 @@ namespace SLACowryWise.Domain.Services
                 .ConfigureAwait(false);
             var acctProfile = new AccountProfile
             {
-                AccountProfileDto = result.Data
+                AccountProfileDto = result,
+                Request = inputModel
             };
             await _profile.CreateOneAsync(acctProfile).ConfigureAwait(false);
             return result.Data;
@@ -141,7 +145,8 @@ namespace SLACowryWise.Domain.Services
                 .ConfigureAwait(false);
             var identityUpdate = new AccountIdentityUpdate
             {
-                AccountIdentityDto = result.Data
+                AccountIdentityDto = result,
+                Request = inputModel
             };
             await _identity.CreateOneAsync(identityUpdate).ConfigureAwait(false);
             return result.Data;
@@ -157,7 +162,8 @@ namespace SLACowryWise.Domain.Services
                 .ConfigureAwait(false);
             var bankUpdate = new AccountBankUpdate
             {
-                AccountBankUpdateDto = result.Data
+                AccountBankUpdateDto = result,
+                Request = inputModel
             };
             await _bank.CreateOneAsync(bankUpdate).ConfigureAwait(false);
             return result.Data;

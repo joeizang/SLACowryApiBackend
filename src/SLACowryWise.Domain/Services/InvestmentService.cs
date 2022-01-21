@@ -40,6 +40,7 @@ namespace SLACowryWise.Domain.Services
                 SingleInvestmentResponseDto = result.Data,
                 AccountId = inputModel.AccountId,
                 CustomerId = inputModel.CustomerId,
+                Request = inputModel
             };
             await _createInvestment.CreateOneAsync(created).ConfigureAwait(false);
             return result.Data;
@@ -81,6 +82,7 @@ namespace SLACowryWise.Domain.Services
                 FundedInvestmentDto = result.Data,
                 AccountId = inputModel.AccountId,
                 CustomerId = inputModel.CustomerId,
+                Request = inputModel
             };
             await _investmentFunded.CreateOneAsync(funded).ConfigureAwait(false);
             return result.Data;
@@ -99,6 +101,8 @@ namespace SLACowryWise.Domain.Services
                 InvestmentLiquidatedDto = result.Data,
                 AccountId = accountId,
                 CustomerId = customerId,
+                InvestmentId = investmentId,
+
             };
             await _liquidateInvestment.CreateOneAsync(liquidated).ConfigureAwait(false);
             return result.Data;

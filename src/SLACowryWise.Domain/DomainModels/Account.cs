@@ -1,46 +1,51 @@
-﻿using SLACowryWise.Domain.Abstractions;
+﻿using RestSharp;
+using SLACowryWise.Domain.Abstractions;
 using SLACowryWise.Domain.DTOs.Accounts;
 using SLACowryWise.Domain.Services;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace SLACowryWise.Domain.DomainModels
 {
     [BsonCollection("AccountsCreated")]
     public class AccountCreated : BaseDomainModel
     {
-        public AccountCreationResponse AccountCreationDto { get; set; }
+        public RestResponse<AccountCreationResponse> AccountCreationDto { get; set; }
+
+        public CreateAccountInputModel Request { get; set; }
     }
 
     [BsonCollection("AccountsProfile")]
     public class AccountProfile : BaseDomainModel
     {
-        public AccountCreationResponse AccountProfileDto { get; set; }
+        public RestResponse<AccountCreationResponse> AccountProfileDto { get; set; }
+        public UpdateProfileInputModel Request { get; internal set; }
     }
 
     [BsonCollection("AccountsBankUpdate")]
     public class AccountBankUpdate : BaseDomainModel
     {
-        public AccountBankUpdateResponse AccountBankUpdateDto { get; set; }
+        public RestResponse<AccountBankUpdateResponse> AccountBankUpdateDto { get; set; }
+        public AddBankInputModel Request { get; internal set; }
     }
 
     [BsonCollection("AccountsIdentityUpate")]
     public class AccountIdentityUpdate : BaseDomainModel
     {
-        public AccountIdentityResponse AccountIdentityDto { get; set; }
+        public RestResponse<AccountIdentityResponse> AccountIdentityDto { get; set; }
+        public UpdateIdentityInputModel Request { get; internal set; }
     }
 
     [BsonCollection("AccountsNextOfKin")]
     public class AccountNextOfKinUpdate : BaseDomainModel
     {
-        public AccountCreationResponse UpdateNextOfKin { get; set; }
+        public RestResponse<AccountCreationResponse> UpdateNextOfKin { get; set; }
+        public AccountNextOfKinInputModel Request { get; internal set; }
     }
 
     [BsonCollection("AccountAddressUpdates")]
     public class AccountAddressUpdates : BaseDomainModel
     {
-        public AccountCreationResponse AddressUpdate { get; set; }
+        public RestResponse<AccountCreationResponse> AddressUpdate { get; set; }
+        public AddressUpdateInputModel Request { get; internal set; }
     }
 
 }

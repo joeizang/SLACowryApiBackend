@@ -43,10 +43,8 @@ namespace SLACowryWise.Domain.Services
                 .ConfigureAwait(false);
             var created = new CreateSavings
             {
-                CreateSavingsResponse = result.Data,
-                AccountId = inputModel.AccountId,
-                CustomerId = inputModel.CustomerId,
-                ProductType = inputModel.ProductTypeId.ToString(),
+                CreateSavingsResponse = result,
+                Response = inputModel
             };
             await _createSavings.CreateOneAsync(created).ConfigureAwait(false);
             return result.Data;
@@ -71,10 +69,8 @@ namespace SLACowryWise.Domain.Services
                 .ConfigureAwait(false);
             var funded = new FundSavings
             {
-                FundSavingsDtoResponse = result.Data,
-                AccountId = inputModel.AccountId,
-                CustomerId = inputModel.CustomerId,
-                ProductType = inputModel.ProductType,
+                FundSavingsDtoResponse = result,
+                Request = inputModel
             };
             await _fundSavings.CreateOneAsync(funded).ConfigureAwait(false);
             return result.Data;
@@ -103,7 +99,8 @@ namespace SLACowryWise.Domain.Services
             };
             var withdrawn = new WithdrawSavings
             {
-                WithdrawFromSavingsDto = withdrawalStatus
+                WithdrawFromSavingsDto = result,
+                Request = inputModel
             };
             await _withdraw.CreateOneAsync(withdrawn).ConfigureAwait(false);
             return withdrawalStatus;

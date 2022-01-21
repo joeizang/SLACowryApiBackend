@@ -51,13 +51,14 @@ namespace SLACowryWiseApi
             services.AddSavingsServiceTypes();
             services.AddWalletServiceTypes();
             services.AddGeneralCowryServices();
+            services.AddSettlementService();
 
             services.AddTransient<IAuthenticationService, AuthenticationService>();
             services.AddTransient<IAssetsService, AssetsService>();
-            services.AddTransient<ISettlementService, SettlementService>();
             services.AddTransient<ITransactionService, TransactionsService>();
             services.AddTransient<IIndex, IndexService>();
             services.AddTransient<ITradeStockService, TradeStockService>();
+
             services.AddScoped<ISignatureGenerator, SignatureGenerator>();
             services.AddControllers().AddJsonOptions(opt =>
             {

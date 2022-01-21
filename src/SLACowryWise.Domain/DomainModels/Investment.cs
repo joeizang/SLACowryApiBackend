@@ -16,6 +16,7 @@ namespace SLACowryWise.Domain.DomainModels
 
         [JsonPropertyName("customer_Id")]
         public string CustomerId { get; set; }
+        public CreateInvestmentInputModel Request { get; internal set; }
     }
 
     [BsonCollection("InvestmentsLiquidated")]
@@ -27,6 +28,7 @@ namespace SLACowryWise.Domain.DomainModels
 
         [JsonPropertyName("customer_Id")]
         public string CustomerId { get; set; }
+        public string InvestmentId { get; internal set; }
     }
 
     [BsonCollection("InvestmentsFunded")]
@@ -39,6 +41,7 @@ namespace SLACowryWise.Domain.DomainModels
 
         [JsonPropertyName("customer_Id")]
         public string CustomerId { get; set; }
+        public WalletTransferInputModel Request { get; internal set; }
     }
 
 

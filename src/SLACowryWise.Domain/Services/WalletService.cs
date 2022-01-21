@@ -43,9 +43,8 @@ namespace SLACowryWise.Domain.Services
                 .ConfigureAwait(false);
             var created = new CreateWallet
             {
-                CreateWalletResponseDto = result.Data,
-                AccountId = inputModel.AccountId,
-                CustomerId = inputModel.CustomerId
+                CreateWalletResponseDto = result,
+                Response = inputModel
             };
             await _createWallet.CreateOneAsync(created).ConfigureAwait(false);
             return result.Data;
@@ -70,9 +69,8 @@ namespace SLACowryWise.Domain.Services
                 .ConfigureAwait(false);
             var transferred = new FundsWalletTransfer
             {
-                TransferFundsFromWallet = result.Data,
-                AccountId = inputModel.AccountId,
-                CustomerId = inputModel.CustomerId
+                TransferFundsFromWallet = result,
+                Response = inputModel
             };
             await _walletTransfer.CreateOneAsync(transferred).ConfigureAwait(false);
             return result.Data;

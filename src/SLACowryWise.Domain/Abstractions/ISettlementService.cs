@@ -1,3 +1,4 @@
+using SLACowryWise.Domain.DomainModels;
 using System;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
@@ -8,6 +9,8 @@ namespace SLACowryWise.Domain.Abstractions
     {
         Task<SettlementResponseDto> WithdrawToUserBankAccount(SettlementInputModel model);
     }
+
+    public interface IWithdrawToUserBank : IMongodbService<WithdrawToUserBank> { }
 
     public class SettlementInputModel
     {
