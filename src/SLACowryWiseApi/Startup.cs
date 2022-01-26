@@ -44,7 +44,6 @@ namespace SLACowryWiseApi
             services.Configure<AuthenticationConfiguration>(Configuration.GetSection("CowryWiseSettings"));
             services.AddHttpClient();
             services.AddHttpClient<IAuthenticationService, AuthenticationService>();
-            //services.AddTransient(opt => new RestClient("https://sandbox.embed.cowrywise.com"));
             services.AddTransient<IHttpService, HttpService>();
             services.AddAccountServiceTypes();
             services.AddInvestmentTypesService();
@@ -52,6 +51,7 @@ namespace SLACowryWiseApi
             services.AddWalletServiceTypes();
             services.AddGeneralCowryServices();
             services.AddSettlementService();
+            services.AddWebhookPersistenceServices();
 
             services.AddTransient<IAuthenticationService, AuthenticationService>();
             services.AddTransient<IAssetsService, AssetsService>();

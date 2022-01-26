@@ -1,8 +1,8 @@
+using Microsoft.Extensions.Options;
+using SLACowryWise.Domain.Configuration;
 using System;
 using System.Security.Cryptography;
 using System.Text;
-using Microsoft.Extensions.Options;
-using SLACowryWise.Domain.Configuration;
 
 namespace SLACowryWise.Domain.WebHookUtilities
 {
@@ -23,7 +23,7 @@ namespace SLACowryWise.Domain.WebHookUtilities
             {
                 hash = hmac.ComputeHash(Encoding.UTF8.GetBytes(_configuration.ClientId));
             }
-            return Convert.ToString(hash).ToUpperInvariant();
+            return Convert.ToHexString(hash).ToUpperInvariant();
         }
     }
 }

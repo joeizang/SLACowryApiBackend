@@ -1,33 +1,34 @@
-using MediatR;
-using SLACowryWise.Domain.Abstractions;
+using SLACowryWise.Domain.Services;
 using System;
 using System.Text.Json.Serialization;
 
 namespace SLACowryWise.Domain.DomainModels.WebhookPayloads
 {
-    public class TransferCreatedFailedPayload : IWebhookPayload
+    [BsonCollection("TransferCreatedWebhookPayload")]
+    public class TransferCreatedWebhookPayload
     {
         [JsonPropertyName("event")]
         public TransferCreatedEvent Event { get; set; }
 
         [JsonPropertyName("data")]
         public TransferCreatedEventPayloadData Data { get; set; }
-        public class TransferCreatedEvent
-        {
-            [JsonPropertyName("id")]
-            public string Id { get; set; }
+    }
+    public class TransferCreatedEvent
+    {
+        [JsonPropertyName("id")]
+        public string Id { get; set; }
 
-            [JsonPropertyName("event")]
-            public string EventName { get; set; }
+        [JsonPropertyName("event")]
+        public string EventName { get; set; }
 
-            [JsonPropertyName("target")]
-            public string Target { get; set; }
+        [JsonPropertyName("target")]
+        public string Target { get; set; }
 
-            [JsonPropertyName("signature")]
-            public string Signature { get; set; }
-        }
+        [JsonPropertyName("signature")]
+        public string Signature { get; set; }
+    }
 
-        public class Amount
+    public class Amount
     {
         [JsonPropertyName("value")]
         public string Value { get; set; }
@@ -79,7 +80,7 @@ namespace SLACowryWise.Domain.DomainModels.WebhookPayloads
     }
 
     public class TransferCreatedEventPayloadData
-        {
+    {
         [JsonPropertyName("id")]
         public string Id { get; set; }
 
@@ -106,6 +107,5 @@ namespace SLACowryWise.Domain.DomainModels.WebhookPayloads
 
         [JsonPropertyName("transaction_date")]
         public DateTime TransactionDate { get; set; }
-    }
     }
 }

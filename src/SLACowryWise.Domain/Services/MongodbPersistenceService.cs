@@ -71,4 +71,36 @@ namespace SLACowryWise.Domain.Services
             CollectionName = collectionName;
         }
     }
+
+    public class MongodbWebhookService<T> : IMongodbWebhookService<T> where T : class
+    {
+        private readonly IMongoCollection<T> _genericCollection;
+
+        public string CollectionName { get; set; }
+        public MongodbWebhookService(IMongoDatabaseSettings settings)
+        {
+            var client = new MongoClient(settings.ConnectionString);
+            var db = client.GetDatabase(settings.DatabaseName);
+            _genericCollection = db.GetCollection<T>(ProvideCollectionName(typeof(T)));
+        }
+        public async Task CreateOneAsync(T entity)
+        {
+            await _genericCollection.InsertOneAsync(entity).ConfigureAwait(false);
+        }
+
+        public async Task<List<T>> GetDocsAsync()
+        {
+            var cursor = await _genericCollection.FindAsync(t => true).ConfigureAwait(false);
+            var result = await cursor.ToListAsync().ConfigureAwait(false);
+            return result;
+        }
+
+        private protected string ProvideCollectionName(Type documentType)
+        {
+            return ((BsonCollectionAttribute)documentType.GetCustomAttributes(
+                typeof(BsonCollectionAttribute),
+                true)
+            .FirstOrDefault())?.CollectionName;
+        }
+    }
 }

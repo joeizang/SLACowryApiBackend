@@ -1,18 +1,18 @@
-using MediatR;
-using SLACowryWise.Domain.Abstractions;
+using SLACowryWise.Domain.Services;
 using System;
 using System.Collections.Generic;
 using System.Text.Json.Serialization;
 
 namespace SLACowryWise.Domain.DomainModels.WebhookPayloads
 {
-    public class InvestmentCreatedPayload : IWebhookPayload
+    [BsonCollection("InvestmentCreatedWebhookPayload")]
+    public class InvestmentCreatedWebhookPayload
     {
         [JsonPropertyName("event")] public InvestmentCreatedEvent InvestmentCreatedEvent { get; set; }
 
         [JsonPropertyName("data")] public InvestmentCreatedPayloadData Data { get; set; }
 
-        
+
     }
 
     public class InvestmentCreatedEvent

@@ -19,4 +19,13 @@ namespace SLACowryWise.Domain.Abstractions
 
         string CollectionName { get; set; }
     }
+
+    public interface IMongodbWebhookService<T> where T : class
+    {
+        Task<List<T>> GetDocsAsync();
+
+        Task CreateOneAsync(T entity);
+
+        string CollectionName { get; set; }
+    }
 }

@@ -1,11 +1,11 @@
-using MediatR;
-using SLACowryWise.Domain.Abstractions;
+using SLACowryWise.Domain.Services;
 using System;
 using System.Text.Json.Serialization;
 
 namespace SLACowryWise.Domain.DomainModels.WebhookPayloads
 {
-    public class SavingsCreatedPayload : IWebhookPayload
+    [BsonCollection("SavingsCreatedWebhookPayload")]
+    public class SavingsCreatedWebhookPayload
     {
         public SavingsCreatedEvent Event { get; set; }
 
